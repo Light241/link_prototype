@@ -9,6 +9,7 @@
   "author": "S.Panfilov",
   "license": "Not for comercial use",
   "devDependencies": {
-    "grunt": "^0.4.5"
+    "grunt": "^0.4.5",
+    "grunt-contrib-coffee": "^0.11.1"
   }
 }

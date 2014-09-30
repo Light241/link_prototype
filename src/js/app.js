@@ -1,3 +1,4 @@
+'use strict';
 
 var HelloWorldLayer = cc.Layer.extend({
     sprite:null,
