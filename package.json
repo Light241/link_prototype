@@ -10,6 +10,9 @@
   "license": "Not for comercial use",
   "devDependencies": {
     "grunt": "^0.4.5",
-    "grunt-contrib-coffee": "^0.11.1"
+    "grunt-contrib-coffee": "^0.11.1",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-newer": "^0.7.0"
   }
 }

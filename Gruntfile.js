@@ -4,7 +4,7 @@ module.exports = function (grunt) {
 
     grunt.initConfig({
             pkg: grunt.file.readJSON('./package.json'),
-            jsSrc: ['./src/js/**/*.js'],
+            coffeeSrc: ['./src/**/*.coffee'],
             jsProd: './prod/app.js',
             jshint: {
                 options: {
@@ -15,18 +15,19 @@ module.exports = function (grunt) {
                         localStorage: true
                     }
                 },
-                src: '<%= jsSrc %>'
+                src: '<%= jsProd %>'
             },
             watch: {
-                js: {
-                    files: '<%= jsSrc %>',
-                    tasks: 'newer:concat:js'
+                coffee: {
+                    files: '<%= coffeeSrc %>',
+                    tasks: 'newer:coffee'
                 }
             },
-            concat: {
-                js: {
-                    src: ['<%= jsSrc %>'],
-                    dest: '<%= jsProd %>'
+            coffee: {
+                compile: {
+                    files: {
+                        '<%= jsProd %>': '<%= coffeeSrc %>'
+                    }
                 }
             }
         }
@@ -34,7 +35,7 @@ module.exports = function (grunt) {
 
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-coffee');
     grunt.loadNpmTasks('grunt-newer');
 
     grunt.registerTask('check', ['jshint']);
