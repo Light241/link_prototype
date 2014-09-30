@@ -5,7 +5,7 @@ module.exports = function (grunt) {
     grunt.initConfig({
             pkg: grunt.file.readJSON('./package.json'),
             coffeeSrc: ['./src/**/*.coffee'],
-            jsProd: './prod/app.js',
+            jsProd: './src/app.js',
             jshint: {
                 options: {
                     globalstrict: true,
@@ -25,7 +25,8 @@ module.exports = function (grunt) {
             },
             coffee: {
                 options: {
-                  bare: true
+                    bare: true,
+                    sourceMap: true
                 },
                 compile: {
                     files: {

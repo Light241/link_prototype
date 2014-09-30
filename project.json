@@ -11,6 +11,6 @@
     "modules" : ["cocos2d"],
 
     "jsList" : [
-        "prod/app.js"
+        "src/app.js"
     ]
 }
