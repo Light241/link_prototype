@@ -2,6 +2,7 @@
 
 res =
     pureBG_png: "res/pureBG.png"
+    runner_png: "res/runner.png"
 
 g_resources = []
 for i of res

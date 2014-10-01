@@ -1,30 +1,45 @@
-var BackgroundLayer, StartupScene;
+var AnimationLayer, BackgroundLayer, StartupScene;
 
 BackgroundLayer = cc.Layer.extend({
-  sprite: null,
   ctor: function() {
-    var size;
     this._super();
-    size = cc.winSize;
-    this.sprite = new cc.Sprite(res.pureBG_png);
-    this.sprite.attr({
-      x: size.width / 2,
-      y: size.height / 2,
-      scale: 0.5,
-      rotation: 180
+    return this.init();
+  },
+  init: function() {
+    var centerPos, spriteBG, winSize;
+    this._super();
+    winSize = cc.director.getWinSize();
+    centerPos = cc.p(winSize.width / 2, winSize.height / 2);
+    spriteBG = cc.Sprite.create(res.pureBG_png);
+    spriteBG.setPosition(centerPos);
+    return this.addChild(spriteBG);
+  }
+});
+
+AnimationLayer = cc.Layer.extend({
+  ctor: function() {
+    this._super();
+    return this.init();
+  },
+  init: function() {
+    var actionTo, spriteRunner;
+    this._super();
+    spriteRunner = cc.Sprite.create(res.runner_png);
+    spriteRunner.attr({
+      x: 80,
+      y: 85
     });
-    this.addChild(this.sprite, 0);
-    this.sprite.runAction(cc.sequence(cc.rotateTo(2, 0), cc.scaleTo(2, 1, 1)));
-    return true;
+    actionTo = cc.MoveTo.create(2, cc.p(300, 85));
+    spriteRunner.runAction(cc.Sequence.create(actionTo));
+    return this.addChild(spriteRunner);
   }
 });
 
 StartupScene = cc.Scene.extend({
   onEnter: function() {
-    var layer;
     this._super();
-    layer = new BackgroundLayer();
-    this.addChild(layer);
+    this.addChild(new BackgroundLayer());
+    this.addChild(new AnimationLayer());
   }
 });
 

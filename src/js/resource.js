@@ -2,7 +2,8 @@
 var g_resources, i, res;
 
 res = {
-  pureBG_png: "res/pureBG.png"
+  pureBG_png: "res/pureBG.png",
+  runner_png: "res/runner.png"
 };
 
 g_resources = [];

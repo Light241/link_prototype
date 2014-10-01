@@ -1,34 +1,47 @@
 BackgroundLayer = cc.Layer.extend(
-    sprite: null
     ctor: ->
         @_super()
+        @init()
 
-        size = cc.winSize
+    init: ->
+        @_super()
 
-        @sprite = new cc.Sprite(res.pureBG_png)
+        winSize = cc.director.getWinSize()
+        centerPos = cc.p winSize.width / 2, winSize.height / 2
+        spriteBG = cc.Sprite.create res.pureBG_png
+        spriteBG.setPosition centerPos
 
-        @sprite.attr
-            x: size.width / 2
-            y: size.height / 2
-            scale: 0.5
-            rotation: 180
+        @addChild spriteBG
+)
 
-        @addChild @sprite, 0
+AnimationLayer = cc.Layer.extend(
+    ctor: ->
+        @_super()
+        @init()
+    init: ->
+        @_super()
 
-        @sprite.runAction cc.sequence(cc.rotateTo(2, 0), cc.scaleTo(2, 1, 1))
-        true
+        spriteRunner = cc.Sprite.create res.runner_png
+        spriteRunner.attr
+            x: 80
+            y: 85
+
+        actionTo = cc.MoveTo.create 2, cc.p 300, 85
+        spriteRunner.runAction cc.Sequence.create actionTo
+        @addChild spriteRunner
 )
 
 StartupScene = cc.Scene.extend(onEnter: ->
     @_super()
-    layer = new BackgroundLayer()
-    @addChild layer
+    @addChild new BackgroundLayer()
+    @addChild new AnimationLayer()
     return
 )
 'use strict'
 
 res =
     pureBG_png: "res/pureBG.png"
+    runner_png: "res/runner.png"
 
 g_resources = []
 for i of res

@@ -6,7 +6,7 @@ module.exports = function (grunt) {
             pkg: grunt.file.readJSON('./package.json'),
             watch: {
                 coffee: {
-                    files: './src/coffee/',
+                    files: './src/coffee/**/*.coffee',
                     tasks: 'newer:coffee'
                 }
             },
