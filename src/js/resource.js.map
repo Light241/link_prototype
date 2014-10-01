@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "resource.js",
+  "sourceRoot": "../coffee/",
+  "sources": [
+    "resource.coffee"
+  ],
+  "names": [],
+  "mappings": "AAAA,YAAA,CAAA;AAAA,IAAA,mBAAA;;AAAA,GAEA,GACI;AAAA,EAAA,cAAA,EAAgB,oBAAhB;AAAA,EACA,eAAA,EAAiB,qBADjB;AAAA,EAEA,iBAAA,EAAmB,uBAFnB;AAAA,EAGA,UAAA,EAAY,kBAHZ;CAHJ,CAAA;;AAAA,WAQA,GAAc,EARd,CAAA;;AASA,KAAA,QAAA,GAAA;AACI,EAAA,WAAW,CAAC,IAAZ,CAAiB,GAAI,CAAA,CAAA,CAArB,CAAA,CADJ;AAAA,CATA"
+}

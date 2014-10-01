@@ -1,4 +1,4 @@
-var BackgroundLayer, StartupScene, g_resources, i, res;
+var BackgroundLayer, StartupScene;
 
 BackgroundLayer = cc.Layer.extend({
   sprite: null,
@@ -28,19 +28,4 @@ StartupScene = cc.Scene.extend({
   }
 });
 
-'use strict';
-
-res = {
-  HelloWorld_png: "res/HelloWorld.png",
-  CloseNormal_png: "res/CloseNormal.png",
-  CloseSelected_png: "res/CloseSelected.png",
-  pureBG_png: "res/white_bg.png"
-};
-
-g_resources = [];
-
-for (i in res) {
-  g_resources.push(res[i]);
-}
-
-//# sourceMappingURL=app.js.map
+//# sourceMappingURL=main.js.map

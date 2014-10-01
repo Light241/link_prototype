@@ -4,23 +4,18 @@ module.exports = function (grunt) {
 
     grunt.initConfig({
             pkg: grunt.file.readJSON('./package.json'),
-            coffeeSrc: ['./src/**/*.coffee'],
-            jsProd: './src/app.js',
-            jshint: {
-                options: {
-                    globalstrict: true,
-                    strict: false,
-                    globals: {
-                        console: true,
-                        localStorage: true
-                    }
-                },
-                src: '<%= jsProd %>'
-            },
             watch: {
                 coffee: {
-                    files: '<%= coffeeSrc %>',
+                    files: './src/coffee/',
                     tasks: 'newer:coffee'
+                }
+            },
+            coffeelint: {
+                all: ['./src/coffee/**/*.coffee'],
+                options: {
+                    'indentation': {
+                        'level': 'ignore'
+                    }
                 }
             },
             coffee: {
@@ -30,18 +25,26 @@ module.exports = function (grunt) {
                 },
                 compile: {
                     files: {
-                        '<%= jsProd %>': '<%= coffeeSrc %>'
+                        './src/app.js': './src/coffee/**/*.coffee'
                     }
+                },
+                glob_to_multiple: {
+                    expand: true,
+                    flatten: true,
+                    cwd: './src/coffee/',
+                    src: ['*.coffee'],
+                    dest: './src/js/',
+                    ext: '.js'
                 }
             }
         }
     );
 
-    grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-coffee');
+    grunt.loadNpmTasks('grunt-coffeelint');
     grunt.loadNpmTasks('grunt-newer');
 
-    grunt.registerTask('check', ['jshint']);
+    grunt.registerTask('check', ['coffeelint']);
 }
 ;

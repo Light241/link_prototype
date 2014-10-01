@@ -1,5 +1,4 @@
-
-HelloWorldLayer = cc.Layer.extend(
+BackgroundLayer = cc.Layer.extend(
     sprite: null
     ctor: ->
         @_super()
@@ -20,9 +19,9 @@ HelloWorldLayer = cc.Layer.extend(
         true
 )
 
-HelloWorldScene = cc.Scene.extend(onEnter: ->
+StartupScene = cc.Scene.extend(onEnter: ->
     @_super()
-    layer = new HelloWorldLayer()
+    layer = new BackgroundLayer()
     @addChild layer
     return
 )
