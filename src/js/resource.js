@@ -2,8 +2,10 @@
 var g_resources, i, res;
 
 res = {
-  pureBG_png: "res/pureBG.png",
-  runner_png: "res/runner.png"
+  sprite_png: "res/sprite.png",
+  sprite_plist: "res/sprite.plist",
+  running_png: "res/running.png",
+  running_plist: "res/running.plist"
 };
 
 g_resources = [];

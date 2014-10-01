@@ -17,21 +17,34 @@ BackgroundLayer = cc.Layer.extend({
 });
 
 AnimationLayer = cc.Layer.extend({
+  spriteSheet: null,
+  runningAction: null,
+  sprite: null,
   ctor: function() {
     this._super();
     return this.init();
   },
   init: function() {
-    var actionTo, spriteRunner;
+    var animFrames, animation, frame, i, str, _i;
     this._super();
-    spriteRunner = cc.Sprite.create(res.runner_png);
-    spriteRunner.attr({
+    cc.spriteFrameCache.addSpriteFrames(res.running_plist);
+    this.spriteSheet = cc.SpriteBatchNode.create(res.running_png);
+    this.addChild(this.spriteSheet);
+    animFrames = [];
+    for (i = _i = 0; _i <= 7; i = ++_i) {
+      str = "runner" + i + ".png";
+      frame = cc.spriteFrameCache.getSpriteFrame(str);
+      animFrames.push(frame);
+    }
+    animation = cc.Animation.create(animFrames, 0.1);
+    this.runningAction = cc.RepeatForever.create(cc.Animate.create(animation));
+    this.sprite = cc.Sprite.create("#runner0.png");
+    this.sprite.attr({
       x: 80,
       y: 85
     });
-    actionTo = cc.MoveTo.create(2, cc.p(300, 85));
-    spriteRunner.runAction(cc.Sequence.create(actionTo));
-    return this.addChild(spriteRunner);
+    this.sprite.runAction(this.runningAction);
+    return this.spriteSheet.addChild(this.sprite);
   }
 });
 
