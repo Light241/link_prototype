@@ -1,0 +1,6 @@
+#Generated js
+src/js/
+
+# Ignore node stuff
+node_modules/
+npm-debug.log
