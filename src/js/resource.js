@@ -1,20 +1,14 @@
-(function() {
-  'use strict';
-  var g_resources, i, res;
+'use strict';
+var g_resources, i, res;
 
-  res = {
-    HelloWorld_png: "res/HelloWorld.png",
-    CloseNormal_png: "res/CloseNormal.png",
-    CloseSelected_png: "res/CloseSelected.png",
-    pureBG_png: "res/white_bg.png"
-  };
+res = {
+  pureBG_png: "res/pureBG.png"
+};
 
-  g_resources = [];
+g_resources = [];
 
-  for (i in res) {
-    g_resources.push(res[i]);
-  }
-
-}).call(this);
+for (i in res) {
+  g_resources.push(res[i]);
+}
 
 //# sourceMappingURL=resource.js.map
