@@ -1,4 +1,8 @@
-BackgroundLayer = cc.Layer.extend(
+BackgroundLayer = cc.Layer.extend
+    map00: null
+    map01: null
+    mapWidth: 0
+    mapIndex: 0
     ctor: ->
         @_super()
         @init()
@@ -6,25 +10,25 @@ BackgroundLayer = cc.Layer.extend(
     init: ->
         @_super()
 
-        winSize = cc.director.getWinSize()
-        centerPos = cc.p winSize.width / 2, winSize.height / 2
-        spriteBG = cc.Sprite.create res.pureBG_png
-        spriteBG.setPosition centerPos
+        @map00 = cc.TMXTiledMap.create res.map00_tmx
+        @addChild @map00
+        @mapWidth = @map00.getContentSize().width
+        @map01 = cc.TMXTiledMap.create res.map01_tmx
+        @map01.setPosition cc.p @mapWidth, 0
+        @addChild @map01
 
-        @addChild spriteBG
-)
-
-AnimationLayer = cc.Layer.extend(
+AnimationLayer = cc.Layer.extend
     spriteSheet: null
     runningAction: null
     sprite: null
     ctor: ->
         @_super()
         @init()
+
     init: ->
         @_super()
 
-        cc.spriteFrameCache.addSpriteFrames res.running_plist
+        cc.spriteFrameCache.addSpriteFrames res.running_plist #TODO (S.Panfilov) second arg
         @spriteSheet = cc.SpriteBatchNode.create res.running_png
         @addChild @spriteSheet
 
@@ -42,11 +46,9 @@ AnimationLayer = cc.Layer.extend(
             y:85
         @sprite.runAction @runningAction;
         @spriteSheet.addChild @sprite;
-)
 
-StartupScene = cc.Scene.extend(onEnter: ->
+StartupScene = cc.Scene.extend onEnter: ->
     @_super()
     @addChild new BackgroundLayer()
-    @addChild new AnimationLayer()
+    #@addChild new AnimationLayer() #TODO (S.Panfilov) turn on
     return
-)
