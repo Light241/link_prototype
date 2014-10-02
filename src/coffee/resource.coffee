@@ -5,9 +5,8 @@ res =
     sprite_plist: "res/sprite.plist"
     running_png: "res/running.png"
     running_plist: "res/running.plist"
-    map_png: "map.png"
-    map00_tmx: "map00.tmx"
-    map01_tmx: "map01.tmx"
+    demo_lvl_bg_png: "res/tiles/demo_lvl_bg.png"
+    demo_lvl_bg_tmx: "res/tiles/demo_lvl_bg.tmx"
 
 g_resources = []
 for i of res

@@ -1,5 +1,5 @@
 BackgroundLayer = cc.Layer.extend
-    map00: null
+    demoLvlMap: null
     map01: null
     mapWidth: 0
     mapIndex: 0
@@ -10,12 +10,11 @@ BackgroundLayer = cc.Layer.extend
     init: ->
         @_super()
 
-        @map00 = cc.TMXTiledMap.create res.map00_tmx
-        @addChild @map00
-        @mapWidth = @map00.getContentSize().width
-        @map01 = cc.TMXTiledMap.create res.map01_tmx
-        @map01.setPosition cc.p @mapWidth, 0
-        @addChild @map01
+        @demoLvlMap = cc.TMXTiledMap.create res.demo_lvl_bg_tmx
+        @addChild @demoLvlMap
+        @mapWidth = @demoLvlMap.getContentSize().width
+
+        @scheduleUpdate();
 
 AnimationLayer = cc.Layer.extend
     spriteSheet: null

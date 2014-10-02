@@ -137,14 +137,48 @@
    <image width="32" height="32" source="point_T.png"/>
   </tile>
  </tileset>
- <layer name="ground" width="100" height="100">
+ <layer name="GroundLayer" width="100" height="100">
   <data encoding="base64" compression="zlib">
-   eJzt0YEJwCAQBEHTf9PpIBp95YQZ2Aq2NW7xFMW6qheerKt+4cm8XS88+W/3C0/GnXrhSd/pF5588yOLH1n8yONHHi/yeJHHizxe5PECAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAICeF5l0AZM=
+   eJzt0UEOgjAARNHx/pd24cYYDRWsTvGRvA2h5MMkyeVBntzbsufMN9575Pwnv2nW/2Eem/WxCbyWggaAESlogFYpaMAWAByTggaALSlowCYAcCYpaMAmwJpS0AAwIgUNAKwnBQ3YAkakoAGA9aSgAWBEChqwBYxKQQM0SkEDwIgUNGALAIBZUtAAjVLQAAAcl4IGAACYIQUN0CwFDQAAwPmloAGbAAAAcLt+3QDAelLQ8E/e/d8jz+/Z8GxnPnn+/j1Xw6sm4Q==
   </data>
  </layer>
- <layer name="objects" width="100" height="100">
+ <layer name="DecsLayer" width="100" height="100">
   <data encoding="base64" compression="zlib">
    eJzt1rsKgzAUBmCh2g6iS6GTY/H9H9F4W4K0AaMIfh+cJTcO/IGkKACAO3iHekRj7ca6/oRemH0T1jSHd8FKHtfyL49XqOrHvKzyivMY35R6qTJhvzzyeYbqdp7xydEIE3f7WlLv9tYfGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACA2AL+uAbE=
   </data>
  </layer>
+ <objectgroup name="PointsObjects">
+  <object name="Point2" x="302" y="174">
+   <ellipse/>
+  </object>
+  <object name="Point3" x="464" y="173">
+   <ellipse/>
+  </object>
+  <object name="Point4" x="624" y="176">
+   <ellipse/>
+  </object>
+  <object name="Point7" x="463" y="302">
+   <ellipse/>
+  </object>
+  <object name="Point1" x="304" y="401">
+   <ellipse/>
+  </object>
+  <object name="Point6" x="623" y="400">
+   <ellipse/>
+  </object>
+  <object name="Point5" x="847" y="335">
+   <ellipse/>
+  </object>
+ </objectgroup>
+ <objectgroup name="PowerLines">
+  <object name="Line_2-1" x="313" y="176">
+   <polyline points="0,0 22,1 22,158 -8,160 -9,215"/>
+  </object>
+  <object name="Line_7-4" x="468" y="302">
+   <polyline points="0,0 92,1 125,-31 156,-31 156,-126"/>
+  </object>
+  <object name="Line_5-inf" x="849" y="335">
+   <polyline points="0,0 -2,-77"/>
+  </object>
+ </objectgroup>
 </map>

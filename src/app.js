@@ -1,18 +1,20 @@
 var AnimationLayer, BackgroundLayer, StartupScene, g_resources, i, res;
 
 BackgroundLayer = cc.Layer.extend({
+  demoLvlMap: null,
+  map01: null,
+  mapWidth: 0,
+  mapIndex: 0,
   ctor: function() {
     this._super();
     return this.init();
   },
   init: function() {
-    var centerPos, spriteBG, winSize;
     this._super();
-    winSize = cc.director.getWinSize();
-    centerPos = cc.p(winSize.width / 2, winSize.height / 2);
-    spriteBG = cc.Sprite.create(res.pureBG_png);
-    spriteBG.setPosition(centerPos);
-    return this.addChild(spriteBG);
+    this.demoLvlMap = cc.TMXTiledMap.create(res.demo_lvl_bg_tmx);
+    this.addChild(this.demoLvlMap);
+    this.mapWidth = this.demoLvlMap.getContentSize().width;
+    return this.scheduleUpdate();
   }
 });
 
@@ -52,7 +54,6 @@ StartupScene = cc.Scene.extend({
   onEnter: function() {
     this._super();
     this.addChild(new BackgroundLayer());
-    this.addChild(new AnimationLayer());
   }
 });
 
@@ -62,7 +63,9 @@ res = {
   sprite_png: "res/sprite.png",
   sprite_plist: "res/sprite.plist",
   running_png: "res/running.png",
-  running_plist: "res/running.plist"
+  running_plist: "res/running.plist",
+  demo_lvl_bg_png: "res/tiles/demo_lvl_bg.png",
+  demo_lvl_bg_tmx: "res/tiles/demo_lvl_bg.tmx"
 };
 
 g_resources = [];
