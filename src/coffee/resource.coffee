@@ -10,4 +10,4 @@ res =
 
 g_resources = []
 for i of res
-    g_resources.push res[i]
+    g_resources.push res[i] if res.hasOwnProperty i

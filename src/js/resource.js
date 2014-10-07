@@ -13,7 +13,9 @@ res = {
 g_resources = [];
 
 for (i in res) {
-  g_resources.push(res[i]);
+  if (res.hasOwnProperty(i)) {
+    g_resources.push(res[i]);
+  }
 }
 
 //# sourceMappingURL=resource.js.map

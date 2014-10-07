@@ -1,4 +1,4 @@
-var AnimationLayer, BackgroundLayer, StartupScene, g_resources, i, res;
+var AnimationLayer, BackgroundLayer, MouseHelper, StartupScene, g_resources, i, res;
 
 BackgroundLayer = cc.Layer.extend({
   demoLvlMap: null,
@@ -59,6 +59,35 @@ StartupScene = cc.Scene.extend({
 
 'use strict';
 
+MouseHelper = function() {
+  return {
+    isMouseExist: function() {
+      return cc.sys.capabilities.hasOwnProperty('mouse');
+    },
+    addMouseListener: function() {
+      return cc.eventManager.addListener({
+        event: cc.EventListener.MOUSE,
+        onMouseDown: function(event) {
+          if (event.getButton() === cc.EventMouse.BUTTON_LEFT) {
+            return cc.log("Left mouse button pressed at " + event.getLocationX());
+          }
+        },
+        onMouseUp: function(event) {
+          if (event.getButton() === cc.EventMouse.BUTTON_LEFT) {
+            return cc.log("Left mouse button released at " + event.getLocationX());
+          }
+        }
+      });
+    },
+    onLeftMouseDown: function() {},
+    onLeftMouseUp: function() {},
+    onLeftMouseClicked: function() {},
+    onLeftMouseDoubleClicked: function() {}
+  };
+};
+
+'use strict';
+
 res = {
   sprite_png: "res/sprite.png",
   sprite_plist: "res/sprite.plist",
@@ -71,7 +100,9 @@ res = {
 g_resources = [];
 
 for (i in res) {
-  g_resources.push(res[i]);
+  if (res.hasOwnProperty(i)) {
+    g_resources.push(res[i]);
+  }
 }
 
 //# sourceMappingURL=app.js.map

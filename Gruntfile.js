@@ -46,5 +46,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-newer');
 
     grunt.registerTask('check', ['coffeelint']);
+    grunt.registerTask('default', ['coffee', 'watch']);
 }
 ;

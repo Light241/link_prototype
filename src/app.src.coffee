@@ -14,10 +14,6 @@ BackgroundLayer = cc.Layer.extend
         @addChild @demoLvlMap
         @mapWidth = @demoLvlMap.getContentSize().width
 
-        #@map01 = cc.TMXTiledMap.create res.map01_tmx
-        #@map01.setPosition cc.p @mapWidth, 0
-
-       #@addChild @map01
         @scheduleUpdate();
 
 AnimationLayer = cc.Layer.extend
@@ -57,6 +53,27 @@ StartupScene = cc.Scene.extend onEnter: ->
     return
 'use strict'
 
+MouseHelper = ->
+    isMouseExist: ->
+        cc.sys.capabilities.hasOwnProperty 'mouse'
+    addMouseListener: ->
+        #TODO (S.Panfilov) addListener has also a nodeOrPriority param
+        cc.eventManager.addListener
+            event: cc.EventListener.MOUSE
+            onMouseDown: (event) ->
+                cc.log "Left mouse button pressed at " + event.getLocationX() if (event.getButton() is cc.EventMouse.BUTTON_LEFT)
+            onMouseUp: (event) ->
+                cc.log "Left mouse button released at " + event.getLocationX() if (event.getButton() is cc.EventMouse.BUTTON_LEFT)
+    onLeftMouseDown: ->
+        #TODO (S.Panfilov)
+    onLeftMouseUp: ->
+        #TODO (S.Panfilov)
+    onLeftMouseClicked: ->
+        #TODO (S.Panfilov)
+    onLeftMouseDoubleClicked: ->
+        #TODO (S.Panfilov) 
+'use strict'
+
 res =
     sprite_png: "res/sprite.png"
     sprite_plist: "res/sprite.plist"
@@ -67,4 +84,4 @@ res =
 
 g_resources = []
 for i of res
-    g_resources.push res[i]
+    g_resources.push res[i] if res.hasOwnProperty i
