@@ -1,4 +1,4 @@
-var AnimationLayer, BackgroundLayer, MouseHelper, StartupScene, g_resources, i, res;
+var AnimationLayer, BackgroundLayer, MouseHelper, StartupScene, TouchHelper, g_resources, i, res;
 
 BackgroundLayer = cc.Layer.extend({
   demoLvlMap: null,
@@ -104,5 +104,44 @@ for (i in res) {
     g_resources.push(res[i]);
   }
 }
+
+'use strict';
+
+TouchHelper = function() {
+  return {
+    isTouchesExist: function() {
+      return cc.sys.capabilities.hasOwnProperty('touches');
+    },
+    addOneTouchListener: function() {
+      return cc.eventManager.addListener({
+        event: cc.EventListener.TOUCH_ONE_BY_ONE,
+        onTouchBegan: function(touch, event) {
+          return cc.log("Touch began " + touch.getLocationX());
+        },
+        onTouchMoved: function(touch, event) {
+          return cc.log("Touch moved " + touch.getLocationX());
+        },
+        onTouchEnded: function(touch, ended) {
+          return cc.log("Touch Began " + touch.getLocationX());
+        },
+        onTouchCancelled: function(touch, event) {
+          return cc.log("Touch cancelled " + touch.getLocationX());
+        }
+      });
+    },
+    addMultyTouchListener: function() {
+      return cc.eventManager.addListener({
+        event: cc.EventListener.TOUCH_ALL_AT_ONCE,
+        onTouchesBegan: function(touches, event) {
+          cc.log("Touches began " + touches[0].getLocationX());
+          return cc.log("Touches began " + touches[1].getLocationX());
+        },
+        onTouchesMoved: function(touches, event) {
+          return cc.log("Touches moved " + touches[2].getLocationX());
+        }
+      });
+    }
+  };
+};
 
 //# sourceMappingURL=app.js.map
