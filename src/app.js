@@ -1,4 +1,68 @@
-var AnimationLayer, BackgroundLayer, MouseHelper, StartupScene, TouchHelper, g_resources, i, res;
+'use strict';
+var AnimationLayer, BackgroundLayer, DisplayHelper, MouseHelper, RESOLUTIONS, StartupScene, TouchHelper, g_resources, i, res;
+
+RESOLUTIONS = {
+  iPadRetina: {
+    large: 2048,
+    small: 1536
+  },
+  iPad: {
+    large: 1024,
+    small: 768
+  },
+  iPhoneSixPlus: {
+    large: 2208,
+    small: 1242
+  },
+  iPhoneSix: {
+    large: 1334,
+    small: 750
+  },
+  iPhoneFive: {
+    large: 1136,
+    small: 640
+  }
+};
+
+DisplayHelper = function() {
+  return {
+    isNative: cc.sys.isNative,
+    searchPaths: jsb.fileUtils.getSearchPaths(),
+    displayWidth: cc.view.getFrameSize().width,
+    displayHeight: cc.view.getFrameSize().height,
+    isIPadRetina: function() {
+      var isLandscape, isPortret;
+      isPortret = this.width === RESOLUTIONS.iPadRetina.large && this.height === RESOLUTIONS.iPadRetina.small;
+      isLandscape = this.width === RESOLUTIONS.iPadRetina.small && this.height === RESOLUTIONS.iPadRetina.large;
+      return isPortret || isLandscape;
+    },
+    iPad: function() {
+      var isLandscape, isPortret;
+      isPortret = this.width === RESOLUTIONS.iPad.large && this.height === RESOLUTIONS.iPad.small;
+      isLandscape = this.width === RESOLUTIONS.iPad.small && this.height === RESOLUTIONS.iPad.large;
+      return isPortret || isLandscape;
+    },
+    iPhoneSixPlus: function() {
+      var isLandscape, isPortret;
+      isPortret = this.width === RESOLUTIONS.iPhoneSixPlus.large && this.height === RESOLUTIONS.iPhoneSixPlus.small;
+      isLandscape = this.width === RESOLUTIONS.iPhoneSixPlus.small && this.height === RESOLUTIONS.iPhoneSixPlus.large;
+      return isPortret || isLandscape;
+    },
+    iPhoneSix: function() {
+      var isLandscape, isPortret;
+      isPortret = this.width === RESOLUTIONS.iPhoneSix.large && this.height === RESOLUTIONS.iPhoneSix.small;
+      isLandscape = this.width === RESOLUTIONS.iPhoneSix.small && this.height === RESOLUTIONS.iPhoneSix.large;
+      return isPortret || isLandscape;
+    },
+    iPhoneFive: function() {
+      var isLandscape, isPortret;
+      isPortret = this.width === RESOLUTIONS.iPhoneFive.large && this.height === RESOLUTIONS.iPhoneFive.small;
+      isLandscape = this.width === RESOLUTIONS.iPhoneFive.small && this.height === RESOLUTIONS.iPhoneFive.large;
+      return isPortret || isLandscape;
+    },
+    isLandscape: function() {}
+  };
+};
 
 BackgroundLayer = cc.Layer.extend({
   demoLvlMap: null,
@@ -77,7 +141,7 @@ MouseHelper = function() {
             return cc.log("Left mouse button released at " + event.getLocationX());
           }
         }
-      });
+      }, this);
     },
     onLeftMouseDown: function() {},
     onLeftMouseUp: function() {},
@@ -127,7 +191,7 @@ TouchHelper = function() {
         onTouchCancelled: function(touch, event) {
           return cc.log("Touch cancelled " + touch.getLocationX());
         }
-      });
+      }, this);
     },
     addMultyTouchListener: function() {
       return cc.eventManager.addListener({
@@ -139,7 +203,7 @@ TouchHelper = function() {
         onTouchesMoved: function(touches, event) {
           return cc.log("Touches moved " + touches[2].getLocationX());
         }
-      });
+      }, this);
     }
   };
 };
