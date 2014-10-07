@@ -1,5 +1,5 @@
 'use strict';
-var AccelerometerHelper, BackgroundLayer, DisplayHelper, KeyboardHelper, MouseHelper, RESOLUTIONS, StartupScene, TouchHelper, g_resources, i, res;
+var AccelerometerHelper, BackgroundLayer, DisplayHelper, EventsUtils, KeyboardHelper, MouseHelper, RESOLUTIONS, StartupScene, TouchHelper, g_resources, i, res;
 
 AccelerometerHelper = function() {
   return {
@@ -93,6 +93,35 @@ DisplayHelper = function() {
     isLandscape: function() {},
     isPortrait: function() {
       return !this.isLandscape();
+    }
+  };
+};
+
+'use strict';
+
+EventsUtils = function() {
+  return {
+    listeners: [],
+    addListener: function(listenerConfig) {
+      return cc.eventManager.addListener(listenerConfig);
+    },
+    removeAllListeners: function() {
+      return cc.eventManager.removeAllListeners();
+    },
+    removeListener: function(listener) {
+      return cc.eventManager.removeListener(listener);
+    },
+    removeListenersForObject: function(object) {
+      return cc.eventManager.removeListeners(object);
+    },
+    removeListenersByType: function(type) {
+      return cc.eventManager.removeListeners(type);
+    },
+    pause: function(layer, isRecursive) {
+      return cc.eventManager.pauseTarget(layer, isRecursive);
+    },
+    resume: function(layer, isRecursive) {
+      return cc.eventManager.resumeTarget(layer, isRecursive);
     }
   };
 };
