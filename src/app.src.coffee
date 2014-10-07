@@ -22,7 +22,7 @@ DisplayHelper = ->
     searchPaths: jsb.fileUtils.getSearchPaths()
     displayWidth: cc.view.getFrameSize().width
     displayHeight: cc.view.getFrameSize().height
-    isResolution: width, height ->
+    isResolution: (width, height) ->
         (@width is width) and (@height is height)
     isIPadRetina: ->
         isPortrait = @isResolution RESOLUTIONS.iPadRetina.large RESOLUTIONS.iPadRetina.small
