@@ -34,31 +34,31 @@ DisplayHelper = function() {
       var isLandscape, isPortrait;
       isPortrait = this.width === RESOLUTIONS.iPadRetina.large && this.height === RESOLUTIONS.iPadRetina.small;
       isLandscape = this.width === RESOLUTIONS.iPadRetina.small && this.height === RESOLUTIONS.iPadRetina.large;
-      return isPortrait || isLandscape;
+      return (isPortrait || isLandscape) && this.isNative;
     },
     iPad: function() {
       var isLandscape, isPortrait;
       isPortrait = this.width === RESOLUTIONS.iPad.large && this.height === RESOLUTIONS.iPad.small;
       isLandscape = this.width === RESOLUTIONS.iPad.small && this.height === RESOLUTIONS.iPad.large;
-      return isPortrait || isLandscape;
+      return (isPortrait || isLandscape) && this.isNative;
     },
     iPhoneSixPlus: function() {
       var isLandscape, isPortrait;
       isPortrait = this.width === RESOLUTIONS.iPhoneSixPlus.large && this.height === RESOLUTIONS.iPhoneSixPlus.small;
       isLandscape = this.width === RESOLUTIONS.iPhoneSixPlus.small && this.height === RESOLUTIONS.iPhoneSixPlus.large;
-      return isPortrait || isLandscape;
+      return (isPortrait || isLandscape) && this.isNative;
     },
     iPhoneSix: function() {
       var isLandscape, isPortrait;
       isPortrait = this.width === RESOLUTIONS.iPhoneSix.large && this.height === RESOLUTIONS.iPhoneSix.small;
       isLandscape = this.width === RESOLUTIONS.iPhoneSix.small && this.height === RESOLUTIONS.iPhoneSix.large;
-      return isPortrait || isLandscape;
+      return (isPortrait || isLandscape) && this.isNative;
     },
     iPhoneFive: function() {
       var isLandscape, isPortrait;
       isPortrait = this.width === RESOLUTIONS.iPhoneFive.large && this.height === RESOLUTIONS.iPhoneFive.small;
       isLandscape = this.width === RESOLUTIONS.iPhoneFive.small && this.height === RESOLUTIONS.iPhoneFive.large;
-      return isPortrait || isLandscape;
+      return (isPortrait || isLandscape) && this.isNative;
     },
     isLandscape: function() {},
     isPortrait: function() {
