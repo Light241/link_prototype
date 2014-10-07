@@ -90,17 +90,23 @@ EventsUtils = ->
 HexUtils = ->
     #add(center, polar(size, 2 * PI / 6 * (i + 0.5))
     hexes: []
-    addHex: (centerX, centerY, size)->
+    hexesConfig:
+        type: 'Pointy topped'
+        cornersCount: 6
+    setHexesConfig: (size) ->
+        @hexesConfig.hexSize = size
+        @hexesConfig.hexHeight = size * 2
+        @hexesConfig.hexWidth = Math.sqrt(3)/2 * @hexesConfig.hexHeight
+        @hexesConfig.horizontalDistance = @hexesConfig.hexWidth
+    addHex: (centerX, centerY) ->
         hex =
-            cornersCount: 6
             centerX: centerX
             centerY: centerY
-            size: size
 
-        for i in [0..hex.cornersCount]
-            angle = 2 * Math.PI / hex.cornersCount * (i + 0.5)
-            x_i = centerX + size * Math.cos angle
-            y_i = centerY + size * Math.sin angle
+        for i in [0..@hexesConfig.cornersCount]
+            angle = 2 * Math.PI / @hexesConfig.cornersCount * (i + 0.5)
+            x_i = centerX + @hexesConfig.hexSize * Math.cos angle
+            y_i = centerY + @hexesConfig.hexSize * Math.sin angle
 
             if i is 0
                 #TODO (S.Panfilov) just move?
@@ -110,8 +116,13 @@ HexUtils = ->
                 #TODO (S.Panfilov) draw a line
                 #lineTo(x_i, y_i)
                 cc.log "drawed the line x: #{x_i}, y: #{y_i}"
-        hex.id = ObjectsUtils.getCustomPostfixId "#{centerX}-#{centerY}"
+        hex.id = ObjectsUtils.getCustomPostfixId "#{Math.floor centerX}-#{Math.floor centerY}"
         @hexes.push hex
+        hex
+    generateHexes: (centerX, centerY, count) ->
+        for i in [0..count]
+            hex = @addHex centerX, centerY
+            
 'use strict'
 
 #TODO (S.Panfilov) may be instead of @ at addListener func, we should set target (some kind of input elem or smt)

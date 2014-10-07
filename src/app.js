@@ -131,26 +131,43 @@ EventsUtils = function() {
 HexUtils = function() {
   return {
     hexes: [],
-    addHex: function(centerX, centerY, size) {
+    hexesConfig: {
+      type: 'Pointy topped',
+      cornersCount: 6
+    },
+    setHexesConfig: function(size) {
+      this.hexesConfig.hexSize = size;
+      this.hexesConfig.hexHeight = size * 2;
+      this.hexesConfig.hexWidth = Math.sqrt(3) / 2 * this.hexesConfig.hexHeight;
+      return this.hexesConfig.horizontalDistance = this.hexesConfig.hexWidth;
+    },
+    addHex: function(centerX, centerY) {
       var angle, hex, i, x_i, y_i, _i, _ref;
       hex = {
-        cornersCount: 6,
         centerX: centerX,
-        centerY: centerY,
-        size: size
+        centerY: centerY
       };
-      for (i = _i = 0, _ref = hex.cornersCount; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
-        angle = 2 * Math.PI / hex.cornersCount * (i + 0.5);
-        x_i = centerX + size * Math.cos(angle);
-        y_i = centerY + size * Math.sin(angle);
+      for (i = _i = 0, _ref = this.hexesConfig.cornersCount; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
+        angle = 2 * Math.PI / this.hexesConfig.cornersCount * (i + 0.5);
+        x_i = centerX + this.hexesConfig.hexSize * Math.cos(angle);
+        y_i = centerY + this.hexesConfig.hexSize * Math.sin(angle);
         if (i === 0) {
           cc.log("moved x: " + x_i + ", y: " + y_i);
         } else {
           cc.log("drawed the line x: " + x_i + ", y: " + y_i);
         }
       }
-      hex.id = ObjectsUtils.getCustomPostfixId("" + centerX + "-" + centerY);
-      return this.hexes.push(hex);
+      hex.id = ObjectsUtils.getCustomPostfixId("" + (Math.floor(centerX)) + "-" + (Math.floor(centerY)));
+      this.hexes.push(hex);
+      return hex;
+    },
+    generateHexes: function(centerX, centerY, count) {
+      var hex, i, _i, _results;
+      _results = [];
+      for (i = _i = 0; 0 <= count ? _i <= count : _i >= count; i = 0 <= count ? ++_i : --_i) {
+        _results.push(hex = this.addHex(centerX, centerY));
+      }
+      return _results;
     }
   };
 };
