@@ -13,13 +13,16 @@ TouchHelper = ->
 
                 cc.log "Touch began at #{touch.getLocationX()}, target: #{target}, locationInNode: #{locationInNode}, size: #{size}"
             onTouchMoved: (touch, event) ->
-                cc.log "Touch moved #{touch.getLocationX()}"
+                target = event.getCurrentTarget();
+                delta = touch.getDelta();
+
+                cc.log "Touch moved #{touch.getLocationX()}, target: #{target}, delta: #{delta}"
             onTouchEnded: (touch, ended) ->
-                cc.log "Touch Began #{touch.getLocationX()}"
+                cc.log "Touch ended #{touch.getLocationX()}"
             onTouchCancelled: (touch, event) ->
                 cc.log "Touch cancelled #{touch.getLocationX()}"
         , @
-    addMultyTouchListener: ->
+    addMultiTouchListener: ->
         cc.eventManager.addListener
             event: cc.EventListener.TOUCH_ALL_AT_ONCE
             onTouchesBegan: (touches, event) ->

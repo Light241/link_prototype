@@ -278,17 +278,20 @@ TouchHelper = function() {
           return cc.log("Touch began at " + (touch.getLocationX()) + ", target: " + target + ", locationInNode: " + locationInNode + ", size: " + size);
         },
         onTouchMoved: function(touch, event) {
-          return cc.log("Touch moved " + (touch.getLocationX()));
+          var delta, target;
+          target = event.getCurrentTarget();
+          delta = touch.getDelta();
+          return cc.log("Touch moved " + (touch.getLocationX()) + ", target: " + target + ", delta: " + delta);
         },
         onTouchEnded: function(touch, ended) {
-          return cc.log("Touch Began " + (touch.getLocationX()));
+          return cc.log("Touch ended " + (touch.getLocationX()));
         },
         onTouchCancelled: function(touch, event) {
           return cc.log("Touch cancelled " + (touch.getLocationX()));
         }
       }, this);
     },
-    addMultyTouchListener: function() {
+    addMultiTouchListener: function() {
       return cc.eventManager.addListener({
         event: cc.EventListener.TOUCH_ALL_AT_ONCE,
         onTouchesBegan: function(touches, event) {
