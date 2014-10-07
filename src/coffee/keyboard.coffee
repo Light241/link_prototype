@@ -11,8 +11,8 @@ KeyboardHelper = ->
             event: cc.EventListener.KEYBOARD
             onKeyPressed: (keyCode, event) ->
                 label = event.getCurrentTarget();
-                label.setString "Key " + keyCode.toString() + " was pressed!"
+                label.setString "Key #{keyCode.toString()} was pressed!"
             onKeyReleased: (keyCode, event) ->
                 label = event.getCurrentTarget();
-                label.setString "Key " + keyCode.toString() + " was released!"
+                label.setString "Key #{keyCode.toString()} was relesed!"
         , @

@@ -142,12 +142,12 @@ KeyboardHelper = function() {
         onKeyPressed: function(keyCode, event) {
           var label;
           label = event.getCurrentTarget();
-          return label.setString("Key " + keyCode.toString() + " was pressed!");
+          return label.setString("Key " + (keyCode.toString()) + " was pressed!");
         },
         onKeyReleased: function(keyCode, event) {
           var label;
           label = event.getCurrentTarget();
-          return label.setString("Key " + keyCode.toString() + " was released!");
+          return label.setString("Key " + (keyCode.toString()) + " was relesed!");
         }
       }, this);
     }
@@ -223,12 +223,12 @@ MouseHelper = function() {
         event: cc.EventListener.MOUSE,
         onMouseDown: function(event) {
           if (event.getButton() === cc.EventMouse.BUTTON_LEFT) {
-            return cc.log("Left mouse button pressed at " + event.getLocationX());
+            return cc.log("Left mouse button pressed at " + (event.getLocationX()));
           }
         },
         onMouseUp: function(event) {
           if (event.getButton() === cc.EventMouse.BUTTON_LEFT) {
-            return cc.log("Left mouse button released at " + event.getLocationX());
+            return cc.log("Left mouse button released at " + (event.getLocationX()));
           }
         }
       }, this);
@@ -271,16 +271,20 @@ TouchHelper = function() {
       return cc.eventManager.addListener({
         event: cc.EventListener.TOUCH_ONE_BY_ONE,
         onTouchBegan: function(touch, event) {
-          return cc.log("Touch began " + touch.getLocationX());
+          var locationInNode, size, target;
+          target = event.getCurrentTarget();
+          locationInNode = target.convertToNodeSpace(touch.getLocation());
+          size = target.getContentSize();
+          return cc.log("Touch began at " + (touch.getLocationX()) + ", target: " + target + ", locationInNode: " + locationInNode + ", size: " + size);
         },
         onTouchMoved: function(touch, event) {
-          return cc.log("Touch moved " + touch.getLocationX());
+          return cc.log("Touch moved " + (touch.getLocationX()));
         },
         onTouchEnded: function(touch, ended) {
-          return cc.log("Touch Began " + touch.getLocationX());
+          return cc.log("Touch Began " + (touch.getLocationX()));
         },
         onTouchCancelled: function(touch, event) {
-          return cc.log("Touch cancelled " + touch.getLocationX());
+          return cc.log("Touch cancelled " + (touch.getLocationX()));
         }
       }, this);
     },
@@ -288,11 +292,11 @@ TouchHelper = function() {
       return cc.eventManager.addListener({
         event: cc.EventListener.TOUCH_ALL_AT_ONCE,
         onTouchesBegan: function(touches, event) {
-          cc.log("Touches began " + touches[0].getLocationX());
-          return cc.log("Touches began " + touches[1].getLocationX());
+          cc.log("Touches began " + (touches[0].getLocationX()));
+          return cc.log("Touches began " + (touches[1].getLocationX()));
         },
         onTouchesMoved: function(touches, event) {
-          return cc.log("Touches moved " + touches[2].getLocationX());
+          return cc.log("Touches moved " + (touches[2].getLocationX()));
         }
       }, this);
     }

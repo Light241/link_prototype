@@ -7,9 +7,9 @@ MouseHelper = ->
         cc.eventManager.addListener
             event: cc.EventListener.MOUSE
             onMouseDown: (event) ->
-                cc.log "Left mouse button pressed at " + event.getLocationX() if (event.getButton() is cc.EventMouse.BUTTON_LEFT)
+                cc.log "Left mouse button pressed at #{event.getLocationX()}" if (event.getButton() is cc.EventMouse.BUTTON_LEFT)
             onMouseUp: (event) ->
-                cc.log "Left mouse button released at " + event.getLocationX() if (event.getButton() is cc.EventMouse.BUTTON_LEFT)
+                cc.log "Left mouse button released at #{event.getLocationX()}" if (event.getButton() is cc.EventMouse.BUTTON_LEFT)
         , @
     onLeftMouseDown: ->
         #TODO (S.Panfilov)
