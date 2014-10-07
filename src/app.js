@@ -1,5 +1,5 @@
 'use strict';
-var AccelerometerHelper, BackgroundLayer, DisplayHelper, EventsUtils, KeyboardHelper, MouseHelper, RESOLUTIONS, StartupScene, TouchHelper, g_resources, i, res;
+var AccelerometerHelper, BackgroundLayer, DisplayHelper, EventsUtils, HexUtils, KeyboardHelper, MouseHelper, ObjectsUtils, RESOLUTIONS, StartupScene, TouchHelper, g_resources, i, res;
 
 AccelerometerHelper = function() {
   return {
@@ -128,6 +128,35 @@ EventsUtils = function() {
 
 'use strict';
 
+HexUtils = function() {
+  return {
+    hexes: [],
+    addHex: function(centerX, centerY, size) {
+      var angle, hex, i, x_i, y_i, _i, _ref;
+      hex = {
+        cornersCount: 6,
+        centerX: centerX,
+        centerY: centerY,
+        size: size
+      };
+      for (i = _i = 0, _ref = hex.cornersCount; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
+        angle = 2 * Math.PI / hex.cornersCount * (i + 0.5);
+        x_i = centerX + size * Math.cos(angle);
+        y_i = centerY + size * Math.sin(angle);
+        if (i === 0) {
+          cc.log("moved x: " + x_i + ", y: " + y_i);
+        } else {
+          cc.log("drawed the line x: " + x_i + ", y: " + y_i);
+        }
+      }
+      hex.id = ObjectsUtils.getCustomPostfixId("" + centerX + "-" + centerY);
+      return this.hexes.push(hex);
+    }
+  };
+};
+
+'use strict';
+
 KeyboardHelper = function() {
   return {
     isKeyboardExist: function() {
@@ -153,6 +182,8 @@ KeyboardHelper = function() {
     }
   };
 };
+
+'use strict';
 
 BackgroundLayer = cc.Layer.extend({
   demoLvlMap: null,
@@ -200,7 +231,8 @@ BackgroundLayer = cc.Layer.extend({
         @sprite.attr
             x:80
             y:85
-        @sprite.runAction @runningAction;
+        @sprite.runAction
+    @runningAction;
         @spriteSheet.addChild @sprite;
  */
 
@@ -238,6 +270,22 @@ MouseHelper = function() {
     onMouseScroll: function() {},
     onLeftMouseClicked: function() {},
     onLeftMouseDoubleClicked: function() {}
+  };
+};
+
+'use strict';
+
+ObjectsUtils = function() {
+  return {
+    getS4: function() {
+      return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+    },
+    getRandomId: function() {
+      return "" + (this.getS4()) + (this.getS4()) + "-" + (this.getS4()) + "-" + (this.getS4()) + "-" + (this.getS4()) + "-" + (this.getS4()) + (this.getS4()) + (this.getS4());
+    },
+    getCustomPostfixId: function(postfix) {
+      return "" + (this.getRandomId()) + "_#postfix";
+    }
   };
 };
 

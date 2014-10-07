@@ -87,6 +87,33 @@ EventsUtils = ->
         cc.eventManager.resumeTarget layer, isRecursive
 'use strict'
 
+HexUtils = ->
+    #add(center, polar(size, 2 * PI / 6 * (i + 0.5))
+    hexes: []
+    addHex: (centerX, centerY, size)->
+        hex =
+            cornersCount: 6
+            centerX: centerX
+            centerY: centerY
+            size: size
+
+        for i in [0..hex.cornersCount]
+            angle = 2 * Math.PI / hex.cornersCount * (i + 0.5)
+            x_i = centerX + size * Math.cos angle
+            y_i = centerY + size * Math.sin angle
+
+            if i is 0
+                #TODO (S.Panfilov) just move?
+                #moveTo(x_i, y_i)
+                cc.log "moved x: #{x_i}, y: #{y_i}"
+            else
+                #TODO (S.Panfilov) draw a line
+                #lineTo(x_i, y_i)
+                cc.log "drawed the line x: #{x_i}, y: #{y_i}"
+        hex.id = ObjectsUtils.getCustomPostfixId "#{centerX}-#{centerY}"
+        @hexes.push hex
+'use strict'
+
 #TODO (S.Panfilov) may be instead of @ at addListener func, we should set target (some kind of input elem or smt)
 KeyboardHelper = ->
     isKeyboardExist: ->
@@ -103,6 +130,8 @@ KeyboardHelper = ->
                 label = event.getCurrentTarget();
                 label.setString "Key #{keyCode.toString()} was relesed!"
         , @
+'use strict'
+
 BackgroundLayer = cc.Layer.extend
     demoLvlMap: null
     map01: null
@@ -148,7 +177,8 @@ BackgroundLayer = cc.Layer.extend
         @sprite.attr
             x:80
             y:85
-        @sprite.runAction @runningAction;
+        @sprite.runAction
+    @runningAction;
         @spriteSheet.addChild @sprite;
     ###
 
@@ -180,6 +210,15 @@ MouseHelper = ->
         #TODO (S.Panfilov)
     onLeftMouseDoubleClicked: ->
         #TODO (S.Panfilov)
+'use strict'
+
+ObjectsUtils = ->
+    getS4: ->
+        Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1)
+    getRandomId: ->
+        "#{@getS4()}#{@getS4()}-#{@getS4()}-#{@getS4()}-#{@getS4()}-#{@getS4()}#{@getS4()}#{@getS4()}"
+    getCustomPostfixId: (postfix)->
+        "#{@getRandomId()}_#postfix"
 'use strict'
 
 res =

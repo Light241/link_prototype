@@ -1,3 +1,5 @@
+'use strict'
+
 BackgroundLayer = cc.Layer.extend
     demoLvlMap: null
     map01: null
@@ -43,7 +45,8 @@ BackgroundLayer = cc.Layer.extend
         @sprite.attr
             x:80
             y:85
-        @sprite.runAction @runningAction;
+        @sprite.runAction
+    @runningAction;
         @spriteSheet.addChild @sprite;
     ###
 
