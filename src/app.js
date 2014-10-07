@@ -1,5 +1,5 @@
 'use strict';
-var BackgroundLayer, DisplayHelper, MouseHelper, RESOLUTIONS, StartupScene, TouchHelper, g_resources, i, res;
+var BackgroundLayer, DisplayHelper, KeyboardHelper, MouseHelper, RESOLUTIONS, StartupScene, TouchHelper, g_resources, i, res;
 
 RESOLUTIONS = {
   iPadRetina: {
@@ -66,6 +66,34 @@ DisplayHelper = function() {
     isLandscape: function() {},
     isPortrait: function() {
       return !this.isLandscape();
+    }
+  };
+};
+
+'use strict';
+
+KeyboardHelper = function() {
+  return {
+    isKeyboardExist: function() {
+      return cc.sys.capabilities.hasOwnProperty('keyboard');
+    },
+    getCurrentTarget: function(event) {
+      return event.getCurrentTarget();
+    },
+    addKeyboardListener: function() {
+      return cc.eventManager.addListener({
+        event: cc.EventListener.KEYBOARD,
+        onKeyPressed: function(keyCode, event) {
+          var label;
+          label = event.getCurrentTarget();
+          return label.setString("Key " + keyCode.toString() + " was pressed!");
+        },
+        onKeyReleased: function(keyCode, event) {
+          var label;
+          label = event.getCurrentTarget();
+          return label.setString("Key " + keyCode.toString() + " was released!");
+        }
+      }, this);
     }
   };
 };
@@ -151,6 +179,7 @@ MouseHelper = function() {
     },
     onLeftMouseDown: function() {},
     onLeftMouseUp: function() {},
+    onMouseScroll: function() {},
     onLeftMouseClicked: function() {},
     onLeftMouseDoubleClicked: function() {}
   };

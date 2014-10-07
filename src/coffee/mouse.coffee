@@ -15,6 +15,8 @@ MouseHelper = ->
         #TODO (S.Panfilov)
     onLeftMouseUp: ->
         #TODO (S.Panfilov)
+    onMouseScroll: ->
+        #TODO (S.Panfilov)
     onLeftMouseClicked: ->
         #TODO (S.Panfilov)
     onLeftMouseDoubleClicked: ->
