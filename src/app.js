@@ -1,5 +1,32 @@
 'use strict';
-var BackgroundLayer, DisplayHelper, KeyboardHelper, MouseHelper, RESOLUTIONS, StartupScene, TouchHelper, g_resources, i, res;
+var AccelerometerHelper, BackgroundLayer, DisplayHelper, KeyboardHelper, MouseHelper, RESOLUTIONS, StartupScene, TouchHelper, g_resources, i, res;
+
+AccelerometerHelper = function() {
+  return {
+    isAccelerometerExist: function() {
+      return cc.sys.capabilities.hasOwnProperty('accelerometer');
+    },
+    enabledAccelerometer: function() {
+      return cc.inputManager.setAccelerometerEnabled(true);
+    },
+    disabledAccelerometer: function() {
+      return cc.inputManager.setAccelerometerEnabled(false);
+    },
+    isAccelerometerEnabled: function() {
+      return cc.Device.isAccelerometerEnabled;
+    },
+    addAccelerometerListener: function() {
+      return cc.eventManager.addListener({
+        event: cc.EventListener.ACCELERATION,
+        callback: function(acc, event) {
+          return cc.log("Accelerometer feel smth!");
+        }
+      }, this);
+    }
+  };
+};
+
+'use strict';
 
 RESOLUTIONS = {
   iPadRetina: {
