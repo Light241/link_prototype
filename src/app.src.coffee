@@ -66,7 +66,7 @@ BackgroundLayer = cc.Layer.extend
 
         @scheduleUpdate();
 
-AnimationLayer = cc.Layer.extend
+###AnimationLayer = cc.Layer.extend
     spriteSheet: null
     runningAction: null
     sprite: null
@@ -95,6 +95,7 @@ AnimationLayer = cc.Layer.extend
             y:85
         @sprite.runAction @runningAction;
         @spriteSheet.addChild @sprite;
+    ###
 
 StartupScene = cc.Scene.extend onEnter: ->
     @_super()
