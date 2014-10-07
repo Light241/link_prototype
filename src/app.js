@@ -31,36 +31,39 @@ DisplayHelper = function() {
     displayWidth: cc.view.getFrameSize().width,
     displayHeight: cc.view.getFrameSize().height,
     isIPadRetina: function() {
-      var isLandscape, isPortret;
-      isPortret = this.width === RESOLUTIONS.iPadRetina.large && this.height === RESOLUTIONS.iPadRetina.small;
+      var isLandscape, isPortrait;
+      isPortrait = this.width === RESOLUTIONS.iPadRetina.large && this.height === RESOLUTIONS.iPadRetina.small;
       isLandscape = this.width === RESOLUTIONS.iPadRetina.small && this.height === RESOLUTIONS.iPadRetina.large;
-      return isPortret || isLandscape;
+      return isPortrait || isLandscape;
     },
     iPad: function() {
-      var isLandscape, isPortret;
-      isPortret = this.width === RESOLUTIONS.iPad.large && this.height === RESOLUTIONS.iPad.small;
+      var isLandscape, isPortrait;
+      isPortrait = this.width === RESOLUTIONS.iPad.large && this.height === RESOLUTIONS.iPad.small;
       isLandscape = this.width === RESOLUTIONS.iPad.small && this.height === RESOLUTIONS.iPad.large;
-      return isPortret || isLandscape;
+      return isPortrait || isLandscape;
     },
     iPhoneSixPlus: function() {
-      var isLandscape, isPortret;
-      isPortret = this.width === RESOLUTIONS.iPhoneSixPlus.large && this.height === RESOLUTIONS.iPhoneSixPlus.small;
+      var isLandscape, isPortrait;
+      isPortrait = this.width === RESOLUTIONS.iPhoneSixPlus.large && this.height === RESOLUTIONS.iPhoneSixPlus.small;
       isLandscape = this.width === RESOLUTIONS.iPhoneSixPlus.small && this.height === RESOLUTIONS.iPhoneSixPlus.large;
-      return isPortret || isLandscape;
+      return isPortrait || isLandscape;
     },
     iPhoneSix: function() {
-      var isLandscape, isPortret;
-      isPortret = this.width === RESOLUTIONS.iPhoneSix.large && this.height === RESOLUTIONS.iPhoneSix.small;
+      var isLandscape, isPortrait;
+      isPortrait = this.width === RESOLUTIONS.iPhoneSix.large && this.height === RESOLUTIONS.iPhoneSix.small;
       isLandscape = this.width === RESOLUTIONS.iPhoneSix.small && this.height === RESOLUTIONS.iPhoneSix.large;
-      return isPortret || isLandscape;
+      return isPortrait || isLandscape;
     },
     iPhoneFive: function() {
-      var isLandscape, isPortret;
-      isPortret = this.width === RESOLUTIONS.iPhoneFive.large && this.height === RESOLUTIONS.iPhoneFive.small;
+      var isLandscape, isPortrait;
+      isPortrait = this.width === RESOLUTIONS.iPhoneFive.large && this.height === RESOLUTIONS.iPhoneFive.small;
       isLandscape = this.width === RESOLUTIONS.iPhoneFive.small && this.height === RESOLUTIONS.iPhoneFive.large;
-      return isPortret || isLandscape;
+      return isPortrait || isLandscape;
     },
-    isLandscape: function() {}
+    isLandscape: function() {},
+    isPortrait: function() {
+      return !this.isLandscape();
+    }
   };
 };
 

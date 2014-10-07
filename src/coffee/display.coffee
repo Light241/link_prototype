@@ -23,24 +23,26 @@ DisplayHelper = ->
     displayWidth: cc.view.getFrameSize().width
     displayHeight: cc.view.getFrameSize().height
     isIPadRetina: ->
-        isPortret = @width is RESOLUTIONS.iPadRetina.large and @height is RESOLUTIONS.iPadRetina.small
+        isPortrait = @width is RESOLUTIONS.iPadRetina.large and @height is RESOLUTIONS.iPadRetina.small
         isLandscape = @width is RESOLUTIONS.iPadRetina.small and @height is RESOLUTIONS.iPadRetina.large
-        isPortret or isLandscape
+        isPortrait or isLandscape
     iPad: ->
-        isPortret = @width is RESOLUTIONS.iPad.large and @height is RESOLUTIONS.iPad.small
+        isPortrait = @width is RESOLUTIONS.iPad.large and @height is RESOLUTIONS.iPad.small
         isLandscape = @width is RESOLUTIONS.iPad.small and @height is RESOLUTIONS.iPad.large
-        isPortret or isLandscape
+        isPortrait or isLandscape
     iPhoneSixPlus: ->
-        isPortret = @width is RESOLUTIONS.iPhoneSixPlus.large and @height is RESOLUTIONS.iPhoneSixPlus.small
+        isPortrait = @width is RESOLUTIONS.iPhoneSixPlus.large and @height is RESOLUTIONS.iPhoneSixPlus.small
         isLandscape = @width is RESOLUTIONS.iPhoneSixPlus.small and @height is RESOLUTIONS.iPhoneSixPlus.large
-        isPortret or isLandscape
+        isPortrait or isLandscape
     iPhoneSix: ->
-        isPortret = @width is RESOLUTIONS.iPhoneSix.large and @height is RESOLUTIONS.iPhoneSix.small
+        isPortrait = @width is RESOLUTIONS.iPhoneSix.large and @height is RESOLUTIONS.iPhoneSix.small
         isLandscape = @width is RESOLUTIONS.iPhoneSix.small and @height is RESOLUTIONS.iPhoneSix.large
-        isPortret or isLandscape
+        isPortrait or isLandscape
     iPhoneFive: ->
-        isPortret = @width is RESOLUTIONS.iPhoneFive.large and @height is RESOLUTIONS.iPhoneFive.small
+        isPortrait = @width is RESOLUTIONS.iPhoneFive.large and @height is RESOLUTIONS.iPhoneFive.small
         isLandscape = @width is RESOLUTIONS.iPhoneFive.small and @height is RESOLUTIONS.iPhoneFive.large
-        isPortret or isLandscape
+        isPortrait or isLandscape
     isLandscape: ->
         #TODO (S.Panfilov)
+    isPortrait: ->
+        !@isLandscape()
