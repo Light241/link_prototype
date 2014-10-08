@@ -133,6 +133,8 @@ HexUtils = function() {
     hexes: {},
     hexesConfig: {
       type: 'Pointy topped',
+      coordinateSystem: 'Axial',
+      startFrom: 'Left-top',
       cornersCount: 6
     },
     setHexesConfig: function(size) {
@@ -141,33 +143,76 @@ HexUtils = function() {
       this.hexesConfig.hexWidth = Math.sqrt(3) / 2 * this.hexesConfig.hexHeight;
       return this.hexesConfig.horizontalDistance = this.hexesConfig.hexWidth;
     },
-    addHex: function(centerX, centerY) {
-      var angle, hex, i, x_i, y_i, _i, _ref;
+    calculateHex: function(centerX, centerY) {
+      var angle, hex, i, _i, _ref, _results;
       hex = {
         centerX: centerX,
-        centerY: centerY
+        centerY: centerY,
+        corners: []
       };
-      for (i = _i = 0, _ref = this.hexesConfig.cornersCount; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
-        angle = 2 * Math.PI / this.hexesConfig.cornersCount * (i + 0.5);
-        x_i = centerX + this.hexesConfig.hexSize * Math.cos(angle);
-        y_i = centerY + this.hexesConfig.hexSize * Math.sin(angle);
-        if (i === 0) {
-          cc.log("moved x: " + x_i + ", y: " + y_i);
-        } else {
-          cc.log("drew the line x: " + x_i + ", y: " + y_i);
-        }
-      }
-      hex.id = ObjectsUtils.getCustomPostfixId("" + (Math.floor(centerX)) + "-" + (Math.floor(centerY)));
-      this.hexes[hex.id] = hex;
-      return hex;
-    },
-    generateHexes: function(centerX, centerY, count) {
-      var hex, i, _i, _results;
       _results = [];
-      for (i = _i = 0; 0 <= count ? _i < count : _i > count; i = 0 <= count ? ++_i : --_i) {
-        _results.push(hex = this.addHex(centerX, centerY));
+      for (i = _i = 0, _ref = this.hexesConfig.cornersCount; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+        angle = 2 * Math.PI / this.hexesConfig.cornersCount * (i + 0.5);
+        _results.push(hex.corners.push({
+          number: i,
+          x: centerX + this.hexesConfig.hexSize * Math.cos(angle),
+          y: centerY + this.hexesConfig.hexSize * Math.sin(angle)
+        }));
       }
       return _results;
+    },
+    generateHexes: function(centerX, centerY, widthHexCount, heihgtHexCount) {
+      var axial, hex, hexesCount, i, newHexCenterX, newHexCenterY, offset, _i;
+      hexesCount = widthHexCount * heihgtHexCount;
+      for (i = _i = 0; 0 <= hexesCount ? _i < hexesCount : _i > hexesCount; i = 0 <= hexesCount ? ++_i : --_i) {
+        hex = {};
+        if (i === 0) {
+          hex = this.calculateHex(centerX, centerY);
+        } else {
+          hex = this.calculateHex(newHexCenterX, newHexCenterY);
+        }
+        offset = this.getOffsetForHex(centerX, centerY, widthHexCount, heightHexCount);
+        newHexCenterX = offset.x;
+        newHexCenterY = offset.y;
+        axial = this.getAxialCoords(widthHexCount, heightHexCount, i);
+        hex.q = axial.q;
+        hex.r = axial.r;
+        hex.id = ObjectsUtils.getCustomPostfixId("" + hex.q + "-" + hex.r);
+        hex.alias = "HEX_" + hex.q + "-" + hex.r;
+        this.hexes[hex.id] = hex;
+      }
+      return this.hexes;
+    },
+    convertCubeToAxial: function(x, z) {
+      return {
+        q: x,
+        r: z
+      };
+    },
+    convertAxialToCube: function(q, r) {
+      return {
+        x: q,
+        z: r,
+        y: (-x) - z
+      };
+    },
+    getOffsetForHex: function(centerX, centerY, widthHexCount, heightHexCount) {},
+    getAxialCoords: function(widthHexCount, heightHexCount, hexNumber) {
+      var r, result;
+      result = {};
+      if (hexNumber === 0) {
+        result.q = 0;
+        result.r = 0;
+      }
+      if (hexNumber <= widthHexCount) {
+        result.q = hexNumber;
+        result.r = 0;
+      }
+      if (hexNumber > widthHexCount) {
+        r = hexNumber % widthHexCount;
+        result.q = i - (r * widthHexCount);
+        return result.r = r;
+      }
     }
   };
 };

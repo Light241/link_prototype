@@ -92,37 +92,65 @@ HexUtils = ->
     hexes: {}
     hexesConfig:
         type: 'Pointy topped'
+        coordinateSystem: 'Axial'
+        startFrom: 'Left-top'
         cornersCount: 6
     setHexesConfig: (size) ->
         @hexesConfig.hexSize = size
         @hexesConfig.hexHeight = size * 2
-        @hexesConfig.hexWidth = Math.sqrt(3)/2 * @hexesConfig.hexHeight
+        @hexesConfig.hexWidth = Math.sqrt(3) / 2 * @hexesConfig.hexHeight
         @hexesConfig.horizontalDistance = @hexesConfig.hexWidth
-    addHex: (centerX, centerY) ->
+    calculateHex: (centerX, centerY) ->
         hex =
             centerX: centerX
             centerY: centerY
+            corners: []
 
-        for i in [0..@hexesConfig.cornersCount]
+        for i in [0...@hexesConfig.cornersCount]
             angle = 2 * Math.PI / @hexesConfig.cornersCount * (i + 0.5)
-            x_i = centerX + @hexesConfig.hexSize * Math.cos angle
-            y_i = centerY + @hexesConfig.hexSize * Math.sin angle
-
+            hex.corners.push
+                number: i
+                x: centerX + @hexesConfig.hexSize * Math.cos angle
+                y: centerY + @hexesConfig.hexSize * Math.sin angle
+    generateHexes: (centerX, centerY, widthHexCount, heihgtHexCount) ->
+        hexesCount = widthHexCount * heihgtHexCount
+        for i in [0...hexesCount]
+            hex = {}
             if i is 0
-                #TODO (S.Panfilov) just move?
-                #moveTo(x_i, y_i)
-                cc.log "moved x: #{x_i}, y: #{y_i}"
+                hex = @calculateHex centerX, centerY
             else
-                #TODO (S.Panfilov) draw a line
-                #lineTo(x_i, y_i)
-                cc.log "drew the line x: #{x_i}, y: #{y_i}"
-        hex.id = ObjectsUtils.getCustomPostfixId "#{Math.floor centerX}-#{Math.floor centerY}"
-        @hexes[hex.id] = hex
-        hex
-    generateHexes: (centerX, centerY, count) ->
-        for i in [0...count]
-            hex = @addHex centerX, centerY
-
+                hex = @calculateHex newHexCenterX, newHexCenterY
+            offset = @getOffsetForHex centerX, centerY, widthHexCount, heightHexCount
+            newHexCenterX = offset.x
+            newHexCenterY = offset.y
+            axial = @getAxialCoords widthHexCount, heightHexCount, i
+            hex.q = axial.q
+            hex.r = axial.r
+            hex.id = ObjectsUtils.getCustomPostfixId "#{hex.q}-#{hex.r}"
+            hex.alias = "HEX_#{hex.q}-#{hex.r}"
+            @hexes[hex.id] = hex
+        @hexes
+    convertCubeToAxial: (x, z) ->
+        q: x
+        r: z
+    convertAxialToCube: (q, r) ->
+        x: q
+        z: r
+        y: (-x) - z
+    getOffsetForHex: (centerX, centerY, widthHexCount, heightHexCount) ->
+        #TODO (S.Panfilov)
+    getAxialCoords: (widthHexCount, heightHexCount, hexNumber) ->
+        result = {}
+        if hexNumber is 0
+            result.q = 0
+            result.r = 0
+        if hexNumber <= widthHexCount
+            result.q = hexNumber
+            result.r = 0
+        if hexNumber > widthHexCount
+            r = hexNumber % widthHexCount
+            result.q = i - (r * widthHexCount)
+            result.r = r
 'use strict'
 
 #TODO (S.Panfilov) may be instead of @ at addListener func, we should set target (some kind of input elem or smt)
