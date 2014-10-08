@@ -197,18 +197,20 @@ HexUtils = function() {
       };
     },
     getOffsetForHex: function(centerX, centerY, widthHexCount, heightHexCount, hexNumber) {
-      var distance, result;
+      var distance, offsetInHexes, r, result;
       distance = this.hexesConfig.size;
       result = {};
       if (hexNumber === 0) {
-        result.x = 0;
-        result.y = 0;
+        result.x = centerX;
+        result.y = centerY;
       } else if (hexNumber <= widthHexCount) {
-        result.x = 0;
-        result.y = 0;
+        result.x = centerX + (distance * hexNumber);
+        result.y = centerY;
       } else if (hexNumber > widthHexCount) {
-        result.x = 0;
-        result.y = 0;
+        r = hexNumber % widthHexCount;
+        offsetInHexes = hexNumber - (widthHexCount * r);
+        result.x = centerX + (distance * (offsetInHexes - 1));
+        result.y = centerY + (distance * r);
       }
       return result;
     },

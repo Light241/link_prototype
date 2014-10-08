@@ -1,7 +1,6 @@
 'use strict'
 
 HexUtils = ->
-    #add(center, polar(size, 2 * PI / 6 * (i + 0.5))
     hexes: {}
     hexesConfig:
         type: 'Pointy topped'
@@ -54,14 +53,16 @@ HexUtils = ->
         distance = @hexesConfig.size
         result = {}
         if hexNumber is 0
-            result.x = 0
-            result.y = 0
+            result.x = centerX
+            result.y = centerY
         else if hexNumber <= widthHexCount
-            result.x = 0
-            result.y = 0
+            result.x = centerX + (distance * hexNumber)
+            result.y = centerY
         else if hexNumber > widthHexCount
-            result.x = 0
-            result.y = 0
+            r = hexNumber % widthHexCount
+            offsetInHexes = hexNumber - (widthHexCount * r)
+            result.x = centerX + (distance * (offsetInHexes-1))
+            result.y = centerY + (distance * r)
         result
     getAxialCoords: (widthHexCount, heightHexCount, hexNumber) ->
         result = {}
