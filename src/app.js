@@ -1,4 +1,3 @@
-'use strict';
 var AccelerometerHelper, BackgroundLayer, DisplayHelper, EventsUtils, HexUtils, KeyboardHelper, MouseHelper, ObjectsUtils, StartupScene, TouchHelper, g_resources, i, res;
 
 AccelerometerHelper = (function() {
@@ -33,8 +32,6 @@ AccelerometerHelper = (function() {
 
 })();
 
-'use strict';
-
 DisplayHelper = (function() {
   function DisplayHelper() {}
 
@@ -63,11 +60,13 @@ DisplayHelper = (function() {
 
   DisplayHelper.prototype.isNative = cc.sys.isNative;
 
-  DisplayHelper.prototype.searchPaths = jsb.fileUtils.getSearchPaths();
+  DisplayHelper.prototype.getDisplayWidth = function() {
+    return cc.view.getFrameSize().width;
+  };
 
-  DisplayHelper.prototype.displayWidth = cc.view.getFrameSize().width;
-
-  DisplayHelper.prototype.displayHeight = cc.view.getFrameSize().height;
+  DisplayHelper.prototype.getDisplayHeight = function() {
+    return cc.view.getFrameSize().height;
+  };
 
   DisplayHelper.prototype.isResolution = function(width, height) {
     return (this.width === width) && (this.height === height);
@@ -118,8 +117,6 @@ DisplayHelper = (function() {
 
 })();
 
-'use strict';
-
 EventsUtils = (function() {
   function EventsUtils() {}
 
@@ -156,8 +153,6 @@ EventsUtils = (function() {
   return EventsUtils;
 
 })();
-
-'use strict';
 
 HexUtils = (function() {
   function HexUtils() {}
@@ -275,8 +270,6 @@ HexUtils = (function() {
 
 })();
 
-'use strict';
-
 KeyboardHelper = (function() {
   function KeyboardHelper() {}
 
@@ -368,8 +361,6 @@ StartupScene = cc.Scene.extend({
   }
 });
 
-'use strict';
-
 MouseHelper = (function() {
   function MouseHelper() {}
 
@@ -407,8 +398,6 @@ MouseHelper = (function() {
 
 })();
 
-'use strict';
-
 ObjectsUtils = (function() {
   function ObjectsUtils() {}
 
@@ -428,8 +417,6 @@ ObjectsUtils = (function() {
 
 })();
 
-'use strict';
-
 res = {
   sprite_png: "res/sprite.png",
   sprite_plist: "res/sprite.plist",
@@ -446,8 +433,6 @@ for (i in res) {
     g_resources.push(res[i]);
   }
 }
-
-'use strict';
 
 TouchHelper = (function() {
   function TouchHelper() {}

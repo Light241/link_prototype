@@ -1,5 +1,3 @@
-'use strict'
-
 #TODO (S.Panfilov) may be instead of @ at addListener func, we should set sprite
 class AccelerometerHelper
     isAccelerometerExist: ->
@@ -16,8 +14,6 @@ class AccelerometerHelper
             callback: (acc, event) ->
                 cc.log "Accelerometer feel smth!"
         , @
-'use strict'
-
 class DisplayHelper
     RESOLUTIONS:
         iPadRetina:
@@ -36,9 +32,10 @@ class DisplayHelper
             large: 1136
             small: 640
     isNative: cc.sys.isNative
-    searchPaths: jsb.fileUtils.getSearchPaths()
-    displayWidth: cc.view.getFrameSize().width
-    displayHeight: cc.view.getFrameSize().height
+    getDisplayWidth: ->
+        cc.view.getFrameSize().width
+    getDisplayHeight: ->
+        cc.view.getFrameSize().height
     isResolution: (width, height) ->
         (@width is width) and (@height is height)
     isIPadRetina: ->
@@ -65,8 +62,6 @@ class DisplayHelper
         #TODO (S.Panfilov)
     isPortrait: ->
         !@isLandscape()
-'use strict'
-
 class EventsUtils
     #TODO (S.Panfilov) the idea is to push listeners here when create it (in utils, helpers, etc.)
     listeners: []
@@ -84,8 +79,6 @@ class EventsUtils
         cc.eventManager.pauseTarget layer, isRecursive
     resume: (layer, isRecursive)->
         cc.eventManager.resumeTarget layer, isRecursive
-'use strict'
-
 class HexUtils
     hexes: {}
     hexesConfig:
@@ -163,8 +156,6 @@ class HexUtils
             result.q = i - (r * widthHexCount)
             result.r = r
         result
-'use strict'
-
 #TODO (S.Panfilov) may be instead of @ at addListener func, we should set target (some kind of input elem or smt)
 class KeyboardHelper
     isKeyboardExist: ->
@@ -181,7 +172,7 @@ class KeyboardHelper
                 label = event.getCurrentTarget();
                 label.setString "Key #{keyCode.toString()} was relesed!"
         , @
-'use strict'
+'use strict' #do not remove (never!)
 
 BackgroundLayer = cc.Layer.extend
     demoLvlMap: null
@@ -238,8 +229,6 @@ StartupScene = cc.Scene.extend onEnter: ->
     @addChild new BackgroundLayer()
     #@addChild new AnimationLayer() #TODO (S.Panfilov) turn on
     return
-'use strict'
-
 class MouseHelper
     isMouseExist: ->
         cc.sys.capabilities.hasOwnProperty 'mouse'
@@ -261,8 +250,6 @@ class MouseHelper
         #TODO (S.Panfilov)
     onLeftMouseDoubleClicked: ->
         #TODO (S.Panfilov)
-'use strict'
-
 class ObjectsUtils
     getS4: ->
         Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1)
@@ -270,8 +257,6 @@ class ObjectsUtils
         "#{@getS4()}#{@getS4()}-#{@getS4()}-#{@getS4()}-#{@getS4()}-#{@getS4()}#{@getS4()}#{@getS4()}"
     getCustomPostfixId: (postfix)->
         "#{@getRandomId()}_#postfix"
-'use strict'
-
 res =
     sprite_png: "res/sprite.png"
     sprite_plist: "res/sprite.plist"
@@ -283,8 +268,6 @@ res =
 g_resources = []
 for i of res
     g_resources.push res[i] if res.hasOwnProperty i
-'use strict'
-
 class TouchHelper
     isTouchesExist: ->
         cc.sys.capabilities.hasOwnProperty 'touches'

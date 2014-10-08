@@ -1,5 +1,3 @@
-'use strict'
-
 class MouseHelper
     isMouseExist: ->
         cc.sys.capabilities.hasOwnProperty 'mouse'

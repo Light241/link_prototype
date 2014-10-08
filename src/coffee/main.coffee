@@ -1,4 +1,4 @@
-'use strict'
+'use strict' #do not remove (never!)
 
 BackgroundLayer = cc.Layer.extend
     demoLvlMap: null

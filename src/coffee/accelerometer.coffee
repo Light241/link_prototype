@@ -1,5 +1,3 @@
-'use strict'
-
 #TODO (S.Panfilov) may be instead of @ at addListener func, we should set sprite
 class AccelerometerHelper
     isAccelerometerExist: ->

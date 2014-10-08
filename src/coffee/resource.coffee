@@ -1,5 +1,3 @@
-'use strict'
-
 res =
     sprite_png: "res/sprite.png"
     sprite_plist: "res/sprite.plist"

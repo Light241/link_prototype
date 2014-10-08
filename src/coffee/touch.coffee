@@ -1,5 +1,3 @@
-'use strict'
-
 class TouchHelper
     isTouchesExist: ->
         cc.sys.capabilities.hasOwnProperty 'touches'

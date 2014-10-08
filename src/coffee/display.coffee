@@ -1,5 +1,3 @@
-'use strict'
-
 class DisplayHelper
     RESOLUTIONS:
         iPadRetina:
@@ -18,9 +16,10 @@ class DisplayHelper
             large: 1136
             small: 640
     isNative: cc.sys.isNative
-    searchPaths: jsb.fileUtils.getSearchPaths()
-    displayWidth: cc.view.getFrameSize().width
-    displayHeight: cc.view.getFrameSize().height
+    getDisplayWidth: ->
+        cc.view.getFrameSize().width
+    getDisplayHeight: ->
+        cc.view.getFrameSize().height
     isResolution: (width, height) ->
         (@width is width) and (@height is height)
     isIPadRetina: ->
