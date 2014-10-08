@@ -196,23 +196,37 @@ HexUtils = function() {
         y: (-x) - z
       };
     },
-    getOffsetForHex: function(centerX, centerY, widthHexCount, heightHexCount, hexNumber) {},
+    getOffsetForHex: function(centerX, centerY, widthHexCount, heightHexCount, hexNumber) {
+      var distance, result;
+      distance = this.hexesConfig.size;
+      result = {};
+      if (hexNumber === 0) {
+        result.x = 0;
+        result.y = 0;
+      } else if (hexNumber <= widthHexCount) {
+        result.x = 0;
+        result.y = 0;
+      } else if (hexNumber > widthHexCount) {
+        result.x = 0;
+        result.y = 0;
+      }
+      return result;
+    },
     getAxialCoords: function(widthHexCount, heightHexCount, hexNumber) {
       var r, result;
       result = {};
       if (hexNumber === 0) {
         result.q = 0;
         result.r = 0;
-      }
-      if (hexNumber <= widthHexCount) {
+      } else if (hexNumber <= widthHexCount) {
         result.q = hexNumber;
         result.r = 0;
-      }
-      if (hexNumber > widthHexCount) {
+      } else if (hexNumber > widthHexCount) {
         r = hexNumber % widthHexCount;
         result.q = i - (r * widthHexCount);
-        return result.r = r;
+        result.r = r;
       }
+      return result;
     }
   };
 };

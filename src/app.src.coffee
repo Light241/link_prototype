@@ -138,19 +138,31 @@ HexUtils = ->
         z: r
         y: (-x) - z
     getOffsetForHex: (centerX, centerY, widthHexCount, heightHexCount, hexNumber) ->
-        #TODO (S.Panfilov)
+        distance = @hexesConfig.size
+        result = {}
+        if hexNumber is 0
+            result.x = 0
+            result.y = 0
+        else if hexNumber <= widthHexCount
+            result.x = 0
+            result.y = 0
+        else if hexNumber > widthHexCount
+            result.x = 0
+            result.y = 0
+        result
     getAxialCoords: (widthHexCount, heightHexCount, hexNumber) ->
         result = {}
         if hexNumber is 0
             result.q = 0
             result.r = 0
-        if hexNumber <= widthHexCount
+        else if hexNumber <= widthHexCount
             result.q = hexNumber
             result.r = 0
-        if hexNumber > widthHexCount
+        else if hexNumber > widthHexCount
             r = hexNumber % widthHexCount
             result.q = i - (r * widthHexCount)
             result.r = r
+        result
 'use strict'
 
 #TODO (S.Panfilov) may be instead of @ at addListener func, we should set target (some kind of input elem or smt)
