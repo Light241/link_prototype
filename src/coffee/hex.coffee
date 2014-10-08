@@ -2,7 +2,7 @@
 
 HexUtils = ->
     #add(center, polar(size, 2 * PI / 6 * (i + 0.5))
-    hexes: []
+    hexes: {}
     hexesConfig:
         type: 'Pointy topped'
         cornersCount: 6
@@ -28,10 +28,10 @@ HexUtils = ->
             else
                 #TODO (S.Panfilov) draw a line
                 #lineTo(x_i, y_i)
-                cc.log "drawed the line x: #{x_i}, y: #{y_i}"
+                cc.log "drew the line x: #{x_i}, y: #{y_i}"
         hex.id = ObjectsUtils.getCustomPostfixId "#{Math.floor centerX}-#{Math.floor centerY}"
-        @hexes.push hex
+        @hexes[hex.id] = hex
         hex
     generateHexes: (centerX, centerY, count) ->
-        for i in [0..count]
+        for i in [0...count]
             hex = @addHex centerX, centerY

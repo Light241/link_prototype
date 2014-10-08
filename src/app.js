@@ -130,7 +130,7 @@ EventsUtils = function() {
 
 HexUtils = function() {
   return {
-    hexes: [],
+    hexes: {},
     hexesConfig: {
       type: 'Pointy topped',
       cornersCount: 6
@@ -154,17 +154,17 @@ HexUtils = function() {
         if (i === 0) {
           cc.log("moved x: " + x_i + ", y: " + y_i);
         } else {
-          cc.log("drawed the line x: " + x_i + ", y: " + y_i);
+          cc.log("drew the line x: " + x_i + ", y: " + y_i);
         }
       }
       hex.id = ObjectsUtils.getCustomPostfixId("" + (Math.floor(centerX)) + "-" + (Math.floor(centerY)));
-      this.hexes.push(hex);
+      this.hexes[hex.id] = hex;
       return hex;
     },
     generateHexes: function(centerX, centerY, count) {
       var hex, i, _i, _results;
       _results = [];
-      for (i = _i = 0; 0 <= count ? _i <= count : _i >= count; i = 0 <= count ? ++_i : --_i) {
+      for (i = _i = 0; 0 <= count ? _i < count : _i > count; i = 0 <= count ? ++_i : --_i) {
         _results.push(hex = this.addHex(centerX, centerY));
       }
       return _results;
