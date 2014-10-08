@@ -1,6 +1,6 @@
 'use strict'
 
-TouchHelper = ->
+class TouchHelper
     isTouchesExist: ->
         cc.sys.capabilities.hasOwnProperty 'touches'
     addOneTouchListener: ->

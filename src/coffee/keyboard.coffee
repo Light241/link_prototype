@@ -1,7 +1,7 @@
 'use strict'
 
 #TODO (S.Panfilov) may be instead of @ at addListener func, we should set target (some kind of input elem or smt)
-KeyboardHelper = ->
+class KeyboardHelper
     isKeyboardExist: ->
         cc.sys.capabilities.hasOwnProperty 'keyboard'
     getCurrentTarget: (event) ->

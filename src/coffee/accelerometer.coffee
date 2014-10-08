@@ -1,7 +1,7 @@
 'use strict'
 
 #TODO (S.Panfilov) may be instead of @ at addListener func, we should set sprite
-AccelerometerHelper = ->
+class AccelerometerHelper
     isAccelerometerExist: ->
         cc.sys.capabilities.hasOwnProperty 'accelerometer'
     enabledAccelerometer: ->

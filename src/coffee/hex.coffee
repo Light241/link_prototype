@@ -1,6 +1,6 @@
 'use strict'
 
-HexUtils = ->
+class HexUtils
     hexes: {}
     hexesConfig:
         type: 'Pointy topped'

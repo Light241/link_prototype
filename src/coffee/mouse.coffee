@@ -1,6 +1,6 @@
 'use strict'
 
-MouseHelper = ->
+class MouseHelper
     isMouseExist: ->
         cc.sys.capabilities.hasOwnProperty 'mouse'
     addMouseListener: ->

@@ -1,6 +1,6 @@
 'use strict'
 
-EventsUtils = ->
+class EventsUtils
     #TODO (S.Panfilov) the idea is to push listeners here when create it (in utils, helpers, etc.)
     listeners: []
     addListener: (listenerConfig, nodeOrPriority) ->
