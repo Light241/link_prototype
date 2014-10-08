@@ -46,19 +46,19 @@ DisplayHelper = ->
         isPortrait = @isResolution RESOLUTIONS.iPadRetina.large RESOLUTIONS.iPadRetina.small
         isLandscape = @isResolution RESOLUTIONS.iPadRetina.small RESOLUTIONS.iPadRetina.large
         (isPortrait or isLandscape) and @isNative
-    iPad: ->
+    isIPad: ->
         isPortrait = @isResolution RESOLUTIONS.iPad.large RESOLUTIONS.iPad.small
         isLandscape = @isResolution RESOLUTIONS.iPad.small RESOLUTIONS.iPad.large
         (isPortrait or isLandscape) and @isNative
-    iPhoneSixPlus: ->
+    isIPhoneSixPlus: ->
         isPortrait = @isResolution RESOLUTIONS.iPhoneSixPlus.large RESOLUTIONS.iPhoneSixPlus.small
         isLandscape = @isResolution RESOLUTIONS.iPhoneSixPlus.small RESOLUTIONS.iPhoneSixPlus.large
         (isPortrait or isLandscape) and @isNative
-    iPhoneSix: ->
+    isIPhoneSix: ->
         isPortrait = @isResolution RESOLUTIONS.iPhoneSix.large RESOLUTIONS.iPhoneSix.small
         isLandscape = @isResolution RESOLUTIONS.iPhoneSix.small RESOLUTIONS.iPhoneSix.large
         (isPortrait or isLandscape) and @isNative
-    iPhoneFive: ->
+    isIPhoneFive: ->
         isPortrait = @isResolution RESOLUTIONS.iPhoneFive.large RESOLUTIONS.iPhoneFive.small
         isLandscape = @isResolution RESOLUTIONS.iPhoneFive.small RESOLUTIONS.iPhoneFive.large
         (isPortrait or isLandscape) and @isNative
@@ -71,8 +71,8 @@ DisplayHelper = ->
 EventsUtils = ->
     #TODO (S.Panfilov) the idea is to push listeners here when create it (in utils, helpers, etc.)
     listeners: []
-    addListener: (listenerConfig) ->
-        cc.eventManager.addListener listenerConfig
+    addListener: (listenerConfig, nodeOrPriority) ->
+        cc.eventManager.addListener listenerConfig, nodeOrPriority
     removeAllListeners: ->
         cc.eventManager.removeAllListeners()
     removeListener: (listener) ->
@@ -112,15 +112,15 @@ HexUtils = ->
                 number: i
                 x: centerX + @hexesConfig.hexSize * Math.cos angle
                 y: centerY + @hexesConfig.hexSize * Math.sin angle
-    generateHexes: (centerX, centerY, widthHexCount, heihgtHexCount) ->
-        hexesCount = widthHexCount * heihgtHexCount
+    generateHexes: (centerX, centerY, widthHexCount, heightHexCount) ->
+        hexesCount = widthHexCount * heightHexCount
         for i in [0...hexesCount]
             hex = {}
             if i is 0
                 hex = @calculateHex centerX, centerY
             else
                 hex = @calculateHex newHexCenterX, newHexCenterY
-            offset = @getOffsetForHex centerX, centerY, widthHexCount, heightHexCount
+            offset = @getOffsetForHex centerX, centerY, widthHexCount, heightHexCount, i
             newHexCenterX = offset.x
             newHexCenterY = offset.y
             axial = @getAxialCoords widthHexCount, heightHexCount, i
@@ -137,7 +137,7 @@ HexUtils = ->
         x: q
         z: r
         y: (-x) - z
-    getOffsetForHex: (centerX, centerY, widthHexCount, heightHexCount) ->
+    getOffsetForHex: (centerX, centerY, widthHexCount, heightHexCount, hexNumber) ->
         #TODO (S.Panfilov)
     getAxialCoords: (widthHexCount, heightHexCount, hexNumber) ->
         result = {}

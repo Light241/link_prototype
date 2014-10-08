@@ -66,25 +66,25 @@ DisplayHelper = function() {
       isLandscape = this.isResolution(RESOLUTIONS.iPadRetina.small(RESOLUTIONS.iPadRetina.large));
       return (isPortrait || isLandscape) && this.isNative;
     },
-    iPad: function() {
+    isIPad: function() {
       var isLandscape, isPortrait;
       isPortrait = this.isResolution(RESOLUTIONS.iPad.large(RESOLUTIONS.iPad.small));
       isLandscape = this.isResolution(RESOLUTIONS.iPad.small(RESOLUTIONS.iPad.large));
       return (isPortrait || isLandscape) && this.isNative;
     },
-    iPhoneSixPlus: function() {
+    isIPhoneSixPlus: function() {
       var isLandscape, isPortrait;
       isPortrait = this.isResolution(RESOLUTIONS.iPhoneSixPlus.large(RESOLUTIONS.iPhoneSixPlus.small));
       isLandscape = this.isResolution(RESOLUTIONS.iPhoneSixPlus.small(RESOLUTIONS.iPhoneSixPlus.large));
       return (isPortrait || isLandscape) && this.isNative;
     },
-    iPhoneSix: function() {
+    isIPhoneSix: function() {
       var isLandscape, isPortrait;
       isPortrait = this.isResolution(RESOLUTIONS.iPhoneSix.large(RESOLUTIONS.iPhoneSix.small));
       isLandscape = this.isResolution(RESOLUTIONS.iPhoneSix.small(RESOLUTIONS.iPhoneSix.large));
       return (isPortrait || isLandscape) && this.isNative;
     },
-    iPhoneFive: function() {
+    isIPhoneFive: function() {
       var isLandscape, isPortrait;
       isPortrait = this.isResolution(RESOLUTIONS.iPhoneFive.large(RESOLUTIONS.iPhoneFive.small));
       isLandscape = this.isResolution(RESOLUTIONS.iPhoneFive.small(RESOLUTIONS.iPhoneFive.large));
@@ -102,8 +102,8 @@ DisplayHelper = function() {
 EventsUtils = function() {
   return {
     listeners: [],
-    addListener: function(listenerConfig) {
-      return cc.eventManager.addListener(listenerConfig);
+    addListener: function(listenerConfig, nodeOrPriority) {
+      return cc.eventManager.addListener(listenerConfig, nodeOrPriority);
     },
     removeAllListeners: function() {
       return cc.eventManager.removeAllListeners();
@@ -161,9 +161,9 @@ HexUtils = function() {
       }
       return _results;
     },
-    generateHexes: function(centerX, centerY, widthHexCount, heihgtHexCount) {
+    generateHexes: function(centerX, centerY, widthHexCount, heightHexCount) {
       var axial, hex, hexesCount, i, newHexCenterX, newHexCenterY, offset, _i;
-      hexesCount = widthHexCount * heihgtHexCount;
+      hexesCount = widthHexCount * heightHexCount;
       for (i = _i = 0; 0 <= hexesCount ? _i < hexesCount : _i > hexesCount; i = 0 <= hexesCount ? ++_i : --_i) {
         hex = {};
         if (i === 0) {
@@ -171,7 +171,7 @@ HexUtils = function() {
         } else {
           hex = this.calculateHex(newHexCenterX, newHexCenterY);
         }
-        offset = this.getOffsetForHex(centerX, centerY, widthHexCount, heightHexCount);
+        offset = this.getOffsetForHex(centerX, centerY, widthHexCount, heightHexCount, i);
         newHexCenterX = offset.x;
         newHexCenterY = offset.y;
         axial = this.getAxialCoords(widthHexCount, heightHexCount, i);
@@ -196,7 +196,7 @@ HexUtils = function() {
         y: (-x) - z
       };
     },
-    getOffsetForHex: function(centerX, centerY, widthHexCount, heightHexCount) {},
+    getOffsetForHex: function(centerX, centerY, widthHexCount, heightHexCount, hexNumber) {},
     getAxialCoords: function(widthHexCount, heightHexCount, hexNumber) {
       var r, result;
       result = {};

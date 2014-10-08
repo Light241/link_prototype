@@ -25,15 +25,15 @@ HexUtils = ->
                 number: i
                 x: centerX + @hexesConfig.hexSize * Math.cos angle
                 y: centerY + @hexesConfig.hexSize * Math.sin angle
-    generateHexes: (centerX, centerY, widthHexCount, heihgtHexCount) ->
-        hexesCount = widthHexCount * heihgtHexCount
+    generateHexes: (centerX, centerY, widthHexCount, heightHexCount) ->
+        hexesCount = widthHexCount * heightHexCount
         for i in [0...hexesCount]
             hex = {}
             if i is 0
                 hex = @calculateHex centerX, centerY
             else
                 hex = @calculateHex newHexCenterX, newHexCenterY
-            offset = @getOffsetForHex centerX, centerY, widthHexCount, heightHexCount
+            offset = @getOffsetForHex centerX, centerY, widthHexCount, heightHexCount, i
             newHexCenterX = offset.x
             newHexCenterY = offset.y
             axial = @getAxialCoords widthHexCount, heightHexCount, i
@@ -50,7 +50,7 @@ HexUtils = ->
         x: q
         z: r
         y: (-x) - z
-    getOffsetForHex: (centerX, centerY, widthHexCount, heightHexCount) ->
+    getOffsetForHex: (centerX, centerY, widthHexCount, heightHexCount, hexNumber) ->
         #TODO (S.Panfilov)
     getAxialCoords: (widthHexCount, heightHexCount, hexNumber) ->
         result = {}
