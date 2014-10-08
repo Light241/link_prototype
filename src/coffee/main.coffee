@@ -1,10 +1,10 @@
 'use strict' #do not remove (never!)
 
 BackgroundLayer = cc.Layer.extend
-    demoLvlMap: null
-    map01: null
-    mapWidth: 0
-    mapIndex: 0
+    #demoLvlMap: null
+    #map01: null
+    #mapWidth: 0
+    #mapIndex: 0
     ctor: ->
         @_super()
         @init()
@@ -12,11 +12,15 @@ BackgroundLayer = cc.Layer.extend
     init: ->
         @_super()
 
-        @demoLvlMap = cc.TMXTiledMap.create res.demo_lvl_bg_tmx
+        ###@demoLvlMap = cc.TMXTiledMap.create res.demo_lvl_bg_tmx
         @addChild @demoLvlMap
         @mapWidth = @demoLvlMap.getContentSize().width
 
-        @scheduleUpdate();
+        @scheduleUpdate();###
+
+        #TODO (S.Panfilov) current work point
+        MouseHelper::onLeftMouse (BackgroundLayer, x, y) ->
+            HexUtils::drawHex x, y
 
 ###AnimationLayer = cc.Layer.extend
     spriteSheet: null

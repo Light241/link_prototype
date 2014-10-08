@@ -14,14 +14,14 @@ class HexUtils
         hex =
             centerX: centerX
             centerY: centerY
-            corners: []
+            corners: {}
 
         for i in [0...@hexesConfig.cornersCount]
             angle = 2 * Math.PI / @hexesConfig.cornersCount * (i + 0.5)
-            hex.corners.push
-                number: i
+            hex.corners[i] =
                 x: centerX + @hexesConfig.hexSize * Math.cos angle
                 y: centerY + @hexesConfig.hexSize * Math.sin angle
+        hex
     generateHexes: (centerX, centerY, widthHexCount, heightHexCount) ->
         hexesCount = widthHexCount * heightHexCount
         for i in [0...hexesCount]
@@ -75,3 +75,7 @@ class HexUtils
             result.q = i - (r * widthHexCount)
             result.r = r
         result
+    drawHex: (centerX, centerY) ->
+        hex = @calculateHex centerX, centerY
+        for i in [0...@hexesConfig.cornersCount]
+            cc.drawLine hex.corners[i].x, hex.corners[i].y

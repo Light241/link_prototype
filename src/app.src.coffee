@@ -95,14 +95,14 @@ class HexUtils
         hex =
             centerX: centerX
             centerY: centerY
-            corners: []
+            corners: {}
 
         for i in [0...@hexesConfig.cornersCount]
             angle = 2 * Math.PI / @hexesConfig.cornersCount * (i + 0.5)
-            hex.corners.push
-                number: i
+            hex.corners[i] =
                 x: centerX + @hexesConfig.hexSize * Math.cos angle
                 y: centerY + @hexesConfig.hexSize * Math.sin angle
+        hex
     generateHexes: (centerX, centerY, widthHexCount, heightHexCount) ->
         hexesCount = widthHexCount * heightHexCount
         for i in [0...hexesCount]
@@ -156,6 +156,10 @@ class HexUtils
             result.q = i - (r * widthHexCount)
             result.r = r
         result
+    drawHex: (centerX, centerY) ->
+        hex = @calculateHex centerX, centerY
+        for i in [0...@hexesConfig.cornersCount]
+            cc.drawLine hex.corners[i].x, hex.corners[i].y
 #TODO (S.Panfilov) may be instead of @ at addListener func, we should set target (some kind of input elem or smt)
 class KeyboardHelper
     isKeyboardExist: ->
@@ -175,10 +179,10 @@ class KeyboardHelper
 'use strict' #do not remove (never!)
 
 BackgroundLayer = cc.Layer.extend
-    demoLvlMap: null
-    map01: null
-    mapWidth: 0
-    mapIndex: 0
+    #demoLvlMap: null
+    #map01: null
+    #mapWidth: 0
+    #mapIndex: 0
     ctor: ->
         @_super()
         @init()
@@ -186,11 +190,15 @@ BackgroundLayer = cc.Layer.extend
     init: ->
         @_super()
 
-        @demoLvlMap = cc.TMXTiledMap.create res.demo_lvl_bg_tmx
+        ###@demoLvlMap = cc.TMXTiledMap.create res.demo_lvl_bg_tmx
         @addChild @demoLvlMap
         @mapWidth = @demoLvlMap.getContentSize().width
 
-        @scheduleUpdate();
+        @scheduleUpdate();###
+
+        #TODO (S.Panfilov) current work point
+        MouseHelper::onLeftMouse (BackgroundLayer, x, y) ->
+            HexUtils::drawHex x, y
 
 ###AnimationLayer = cc.Layer.extend
     spriteSheet: null
@@ -232,16 +240,30 @@ StartupScene = cc.Scene.extend onEnter: ->
 class MouseHelper
     isMouseExist: ->
         cc.sys.capabilities.hasOwnProperty 'mouse'
-    addMouseListener: ->
+    ###addMouseListener: ->
         cc.eventManager.addListener
             event: cc.EventListener.MOUSE
             onMouseDown: (event) ->
-                cc.log "Left mouse button pressed at #{event.getLocationX()}" if (event.getButton() is cc.EventMouse.BUTTON_LEFT)
+                if (event.getButton() is cc.EventMouse.BUTTON_LEFT)
+                    @onLeftMouseDown()
+                    cc.log "Left mouse button pressed at #{event.getLocationX()}"
             onMouseUp: (event) ->
                 cc.log "Left mouse button released at #{event.getLocationX()}" if (event.getButton() is cc.EventMouse.BUTTON_LEFT)
-        , @
-    onLeftMouseDown: ->
-        #TODO (S.Panfilov)
+        , @###
+    onLeftMouse: (target, callbackDown, callbackUp) ->
+        cc.eventManager.addListener
+            event: cc.EventListener.MOUSE
+            onMouseDown: (event) ->
+                if (event.getButton() is cc.EventMouse.BUTTON_LEFT)
+                    callbackDown event.getLocationX() event.getLocationY() if callbackDown
+                    cc.log "Left mouse button pressed at #{event.getLocationX()}"
+            onMouseUp: (event) ->
+                if (event.getButton() is cc.EventMouse.BUTTON_LEFT)
+                    callbackUp event.getLocationX() event.getLocationY() if callbackUp
+                    cc.log "Left mouse button released at #{event.getLocationX()}" if (event.getButton() is cc.EventMouse.BUTTON_LEFT)
+        , target
+
+        callback() if callback
     onLeftMouseUp: ->
         #TODO (S.Panfilov)
     onMouseScroll: ->

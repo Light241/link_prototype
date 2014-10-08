@@ -174,22 +174,20 @@ HexUtils = (function() {
   };
 
   HexUtils.prototype.calculateHex = function(centerX, centerY) {
-    var angle, hex, i, _i, _ref, _results;
+    var angle, hex, i, _i, _ref;
     hex = {
       centerX: centerX,
       centerY: centerY,
-      corners: []
+      corners: {}
     };
-    _results = [];
     for (i = _i = 0, _ref = this.hexesConfig.cornersCount; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
       angle = 2 * Math.PI / this.hexesConfig.cornersCount * (i + 0.5);
-      _results.push(hex.corners.push({
-        number: i,
+      hex.corners[i] = {
         x: centerX + this.hexesConfig.hexSize * Math.cos(angle),
         y: centerY + this.hexesConfig.hexSize * Math.sin(angle)
-      }));
+      };
     }
-    return _results;
+    return hex;
   };
 
   HexUtils.prototype.generateHexes = function(centerX, centerY, widthHexCount, heightHexCount) {
@@ -266,6 +264,16 @@ HexUtils = (function() {
     return result;
   };
 
+  HexUtils.prototype.drawHex = function(centerX, centerY) {
+    var hex, i, _i, _ref, _results;
+    hex = this.calculateHex(centerX, centerY);
+    _results = [];
+    for (i = _i = 0, _ref = this.hexesConfig.cornersCount; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+      _results.push(cc.drawLine(hex.corners[i].x, hex.corners[i].y));
+    }
+    return _results;
+  };
+
   return HexUtils;
 
 })();
@@ -304,20 +312,22 @@ KeyboardHelper = (function() {
 'use strict';
 
 BackgroundLayer = cc.Layer.extend({
-  demoLvlMap: null,
-  map01: null,
-  mapWidth: 0,
-  mapIndex: 0,
   ctor: function() {
     this._super();
     return this.init();
   },
   init: function() {
     this._super();
-    this.demoLvlMap = cc.TMXTiledMap.create(res.demo_lvl_bg_tmx);
-    this.addChild(this.demoLvlMap);
-    this.mapWidth = this.demoLvlMap.getContentSize().width;
-    return this.scheduleUpdate();
+
+    /*@demoLvlMap = cc.TMXTiledMap.create res.demo_lvl_bg_tmx
+    @addChild @demoLvlMap
+    @mapWidth = @demoLvlMap.getContentSize().width
+    
+    @scheduleUpdate();
+     */
+    return MouseHelper.prototype.onLeftMouse(function(BackgroundLayer, x, y) {
+      return HexUtils.prototype.drawHex(x, y);
+    });
   }
 });
 
@@ -368,23 +378,45 @@ MouseHelper = (function() {
     return cc.sys.capabilities.hasOwnProperty('mouse');
   };
 
-  MouseHelper.prototype.addMouseListener = function() {
-    return cc.eventManager.addListener({
+
+  /*addMouseListener: ->
+      cc.eventManager.addListener
+          event: cc.EventListener.MOUSE
+          onMouseDown: (event) ->
+              if (event.getButton() is cc.EventMouse.BUTTON_LEFT)
+                  @onLeftMouseDown()
+                  cc.log "Left mouse button pressed at #{event.getLocationX()}"
+          onMouseUp: (event) ->
+              cc.log "Left mouse button released at #{event.getLocationX()}" if (event.getButton() is cc.EventMouse.BUTTON_LEFT)
+      , @
+   */
+
+  MouseHelper.prototype.onLeftMouse = function(target, callbackDown, callbackUp) {
+    cc.eventManager.addListener({
       event: cc.EventListener.MOUSE,
       onMouseDown: function(event) {
         if (event.getButton() === cc.EventMouse.BUTTON_LEFT) {
+          if (callbackDown) {
+            callbackDown(event.getLocationX()(event.getLocationY()));
+          }
           return cc.log("Left mouse button pressed at " + (event.getLocationX()));
         }
       },
       onMouseUp: function(event) {
         if (event.getButton() === cc.EventMouse.BUTTON_LEFT) {
-          return cc.log("Left mouse button released at " + (event.getLocationX()));
+          if (callbackUp) {
+            callbackUp(event.getLocationX()(event.getLocationY()));
+          }
+          if (event.getButton() === cc.EventMouse.BUTTON_LEFT) {
+            return cc.log("Left mouse button released at " + (event.getLocationX()));
+          }
         }
       }
-    }, this);
+    }, target);
+    if (callback) {
+      return callback();
+    }
   };
-
-  MouseHelper.prototype.onLeftMouseDown = function() {};
 
   MouseHelper.prototype.onLeftMouseUp = function() {};
 
