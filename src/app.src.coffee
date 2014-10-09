@@ -95,11 +95,11 @@ class HexUtils
         hex =
             centerX: centerX
             centerY: centerY
-            corners: {}
+            corners: []
 
         for i in [0...@hexesConfig.cornersCount]
             angle = 2 * Math.PI / @hexesConfig.cornersCount * (i + 0.5)
-            hex.corners[i] =
+            hex.corners.push
                 x: centerX + @hexesConfig.hexSize * Math.cos angle
                 y: centerY + @hexesConfig.hexSize * Math.sin angle
         hex
@@ -158,8 +158,10 @@ class HexUtils
         result
     drawHex: (centerX, centerY) ->
         hex = @calculateHex centerX, centerY
-        for i in [0...@hexesConfig.cornersCount]
-            cc.drawLine hex.corners[i].x, hex.corners[i].y
+        #for i in [0...@hexesConfig.cornersCount]
+            #cc.drawNode.drawPoly hex.corners[i].x, hex.corners[i].y
+        drawNode = new cc.DrawNode
+        drawNode.drawPoly hex.corners, cc.color(255, 255, 255), 1, cc.color(255, 255, 255)
 #TODO (S.Panfilov) may be instead of @ at addListener func, we should set target (some kind of input elem or smt)
 class KeyboardHelper
     isKeyboardExist: ->
@@ -197,6 +199,7 @@ BackgroundLayer = cc.Layer.extend
         @scheduleUpdate();###
 
         #TODO (S.Panfilov) current work point
+        HexUtils::setHexesConfig 20
         MouseHelper::onLeftMouse @, (x, y) ->
             HexUtils::drawHex x, y
         , null
@@ -248,16 +251,6 @@ StartupScene = cc.Scene.extend onEnter: ->
 class MouseHelper
     isMouseExist: ->
         cc.sys.capabilities.hasOwnProperty 'mouse'
-    ###addMouseListener: ->
-        cc.eventManager.addListener
-            event: cc.EventListener.MOUSE
-            onMouseDown: (event) ->
-                if (event.getButton() is cc.EventMouse.BUTTON_LEFT)
-                    @onLeftMouseDown()
-                    cc.log "Left mouse button pressed at #{event.getLocationX()}"
-            onMouseUp: (event) ->
-                cc.log "Left mouse button released at #{event.getLocationX()}" if (event.getButton() is cc.EventMouse.BUTTON_LEFT)
-        , @###
     onLeftMouse: (target, callbackDown, callbackUp) ->
         cc.eventManager.addListener
             event: cc.EventListener.MOUSE
@@ -270,14 +263,7 @@ class MouseHelper
                     callbackUp event.getLocationX(), event.getLocationY() if callbackUp
                     cc.log "Left mouse button released at #{event.getLocationX()}" if (event.getButton() is cc.EventMouse.BUTTON_LEFT)
         , target
-    onLeftMouseUp: ->
-        #TODO (S.Panfilov)
-    onMouseScroll: ->
-        #TODO (S.Panfilov)
-    onLeftMouseClicked: ->
-        #TODO (S.Panfilov)
-    onLeftMouseDoubleClicked: ->
-        #TODO (S.Panfilov)
+
 class ObjectsUtils
     getS4: ->
         Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1)

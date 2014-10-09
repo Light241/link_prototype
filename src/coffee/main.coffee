@@ -19,6 +19,7 @@ BackgroundLayer = cc.Layer.extend
         @scheduleUpdate();###
 
         #TODO (S.Panfilov) current work point
+        HexUtils::setHexesConfig 20
         MouseHelper::onLeftMouse @, (x, y) ->
             HexUtils::drawHex x, y
         , null

@@ -178,14 +178,14 @@ HexUtils = (function() {
     hex = {
       centerX: centerX,
       centerY: centerY,
-      corners: {}
+      corners: []
     };
     for (i = _i = 0, _ref = this.hexesConfig.cornersCount; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
       angle = 2 * Math.PI / this.hexesConfig.cornersCount * (i + 0.5);
-      hex.corners[i] = {
+      hex.corners.push({
         x: centerX + this.hexesConfig.hexSize * Math.cos(angle),
         y: centerY + this.hexesConfig.hexSize * Math.sin(angle)
-      };
+      });
     }
     return hex;
   };
@@ -265,13 +265,10 @@ HexUtils = (function() {
   };
 
   HexUtils.prototype.drawHex = function(centerX, centerY) {
-    var hex, i, _i, _ref, _results;
+    var drawNode, hex;
     hex = this.calculateHex(centerX, centerY);
-    _results = [];
-    for (i = _i = 0, _ref = this.hexesConfig.cornersCount; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
-      _results.push(cc.drawLine(hex.corners[i].x, hex.corners[i].y));
-    }
-    return _results;
+    drawNode = new cc.DrawNode;
+    return drawNode.drawPoly(hex.corners, cc.color(255, 255, 255), 1, cc.color(255, 255, 255));
   };
 
   return HexUtils;
@@ -325,6 +322,7 @@ BackgroundLayer = cc.Layer.extend({
     
     @scheduleUpdate();
      */
+    HexUtils.prototype.setHexesConfig(20);
     return MouseHelper.prototype.onLeftMouse(this, function(x, y) {
       return HexUtils.prototype.drawHex(x, y);
     }, null);
@@ -386,19 +384,6 @@ MouseHelper = (function() {
     return cc.sys.capabilities.hasOwnProperty('mouse');
   };
 
-
-  /*addMouseListener: ->
-      cc.eventManager.addListener
-          event: cc.EventListener.MOUSE
-          onMouseDown: (event) ->
-              if (event.getButton() is cc.EventMouse.BUTTON_LEFT)
-                  @onLeftMouseDown()
-                  cc.log "Left mouse button pressed at #{event.getLocationX()}"
-          onMouseUp: (event) ->
-              cc.log "Left mouse button released at #{event.getLocationX()}" if (event.getButton() is cc.EventMouse.BUTTON_LEFT)
-      , @
-   */
-
   MouseHelper.prototype.onLeftMouse = function(target, callbackDown, callbackUp) {
     return cc.eventManager.addListener({
       event: cc.EventListener.MOUSE,
@@ -422,14 +407,6 @@ MouseHelper = (function() {
       }
     }, target);
   };
-
-  MouseHelper.prototype.onLeftMouseUp = function() {};
-
-  MouseHelper.prototype.onMouseScroll = function() {};
-
-  MouseHelper.prototype.onLeftMouseClicked = function() {};
-
-  MouseHelper.prototype.onLeftMouseDoubleClicked = function() {};
 
   return MouseHelper;
 
