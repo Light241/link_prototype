@@ -17,13 +17,19 @@ BackgroundLayer = cc.Layer.extend
         helloLabel.y = 100
         @addChild helloLabel, 5
 
-        #TODO (S.Panfilov) current work point
-        hexSizePx = 20
+        hexSizePx = 35
         HexUtils::setHexesConfig hexSizePx
         MouseHelper::onLeftMouse @, (x, y) =>
             polyNode = HexUtils::drawHex x, y
             @addChild polyNode, 5
-        , null
+
+        hexesInRow = 5
+        hexesInCol = 5
+        MouseHelper::onRightMouse @, (x, y) =>
+            hexesGrid = HexUtils::generateHexesGrid x, y, hexesInRow, hexesInCol
+            polyNode =  HexUtils::drawHexesGrid hexesGrid
+            @addChild polyNode, 5
+            HexUtils::drawHexesGridNumbers hexesGrid, @, 6
 
         @scheduleUpdate()
     update: ->

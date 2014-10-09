@@ -155,7 +155,14 @@ EventsUtils = (function() {
 })();
 
 HexUtils = (function() {
+  var _drawHex;
+
   function HexUtils() {}
+
+  _drawHex = function(drawNode, hex) {
+    drawNode.drawPoly(hex.corners, cc.color(255, 255, 255), 1, cc.color(0, 0, 255));
+    return drawNode;
+  };
 
   HexUtils.prototype.hexes = {};
 
@@ -171,6 +178,21 @@ HexUtils = (function() {
     this.hexesConfig.hexHeight = size * 2;
     this.hexesConfig.hexWidth = Math.sqrt(3) / 2 * this.hexesConfig.hexHeight;
     return this.hexesConfig.horizontalDistance = this.hexesConfig.hexWidth;
+  };
+
+  HexUtils.prototype.convertCubeToAxial = function(x, z) {
+    return {
+      q: x,
+      r: z
+    };
+  };
+
+  HexUtils.prototype.convertAxialToCube = function(q, r) {
+    return {
+      x: q,
+      z: r,
+      y: (-x) - z
+    };
   };
 
   HexUtils.prototype.calculateHex = function(centerX, centerY) {
@@ -190,7 +212,7 @@ HexUtils = (function() {
     return hex;
   };
 
-  HexUtils.prototype.generateHexes = function(centerX, centerY, widthHexCount, heightHexCount) {
+  HexUtils.prototype.generateHexesGrid = function(centerX, centerY, widthHexCount, heightHexCount) {
     var axial, hex, hexesCount, i, newHexCenterX, newHexCenterY, offset, _i;
     hexesCount = widthHexCount * heightHexCount;
     for (i = _i = 0; 0 <= hexesCount ? _i < hexesCount : _i > hexesCount; i = 0 <= hexesCount ? ++_i : --_i) {
@@ -206,31 +228,16 @@ HexUtils = (function() {
       axial = this.getAxialCoords(widthHexCount, heightHexCount, i);
       hex.q = axial.q;
       hex.r = axial.r;
-      hex.id = ObjectsUtils.getCustomPostfixId("" + hex.q + "-" + hex.r);
+      hex.id = ObjectsUtils.prototype.getCustomPostfixId("" + hex.q + "-" + hex.r);
       hex.alias = "HEX_" + hex.q + "-" + hex.r;
-      this.hexes[hex.id] = hex;
+      this.hexes[hex.alias] = hex;
     }
     return this.hexes;
   };
 
-  HexUtils.prototype.convertCubeToAxial = function(x, z) {
-    return {
-      q: x,
-      r: z
-    };
-  };
-
-  HexUtils.prototype.convertAxialToCube = function(q, r) {
-    return {
-      x: q,
-      z: r,
-      y: (-x) - z
-    };
-  };
-
   HexUtils.prototype.getOffsetForHex = function(centerX, centerY, widthHexCount, heightHexCount, hexNumber) {
     var distance, offsetInHexes, r, result;
-    distance = this.hexesConfig.size;
+    distance = this.hexesConfig.hexSize;
     result = {};
     if (hexNumber === 0) {
       result.x = centerX;
@@ -258,18 +265,46 @@ HexUtils = (function() {
       result.r = 0;
     } else if (hexNumber > widthHexCount) {
       r = hexNumber % widthHexCount;
-      result.q = i - (r * widthHexCount);
+      result.q = hexNumber - (r * widthHexCount);
       result.r = r;
     }
     return result;
   };
 
   HexUtils.prototype.drawHex = function(centerX, centerY) {
-    var drawNode, hex;
-    hex = this.calculateHex(centerX, centerY);
+    var drawNode;
     drawNode = new cc.DrawNode;
-    drawNode.drawPoly(hex.corners, cc.color(255, 255, 255), 1, cc.color(0, 0, 255));
+    return _drawHex(drawNode, this.calculateHex(centerX, centerY));
+  };
+
+  HexUtils.prototype.drawHexesGrid = function(hexes) {
+    var drawNode, k;
+    hexes = hexes || this.hexes;
+    drawNode = new cc.DrawNode;
+    for (k in hexes) {
+      if (hexes.hasOwnProperty(k)) {
+        _drawHex(drawNode, hexes[k]);
+      }
+    }
     return drawNode;
+  };
+
+  HexUtils.prototype.drawHexesGridNumbers = function(hexes, node, zOrder) {
+    var hexLabel, k, _results;
+    hexes = hexes || this.hexes;
+    _results = [];
+    for (k in hexes) {
+      if (hexes.hasOwnProperty(k)) {
+        hexLabel = new cc.LabelTTF("" + hexes[k].q + " " + hexes[k].r, "Arial", 10);
+        hexLabel.setColor(cc.color(0, 0, 255));
+        hexLabel.x = hexes[k].centerX;
+        hexLabel.y = hexes[k].centerY;
+        _results.push(node.addChild(hexLabel, zOrder));
+      } else {
+        _results.push(void 0);
+      }
+    }
+    return _results;
   };
 
   return HexUtils;
@@ -315,7 +350,7 @@ BackgroundLayer = cc.Layer.extend({
     return this.init();
   },
   init: function() {
-    var helloLabel, hexSizePx, size;
+    var helloLabel, hexSizePx, hexesInCol, hexesInRow, size;
     this._super();
     size = cc.winSize;
     this.maxWidth = cc.director.getWinSizeInPixels().width;
@@ -324,7 +359,7 @@ BackgroundLayer = cc.Layer.extend({
     helloLabel.x = size.width / 2;
     helloLabel.y = 100;
     this.addChild(helloLabel, 5);
-    hexSizePx = 20;
+    hexSizePx = 35;
     HexUtils.prototype.setHexesConfig(hexSizePx);
     MouseHelper.prototype.onLeftMouse(this, (function(_this) {
       return function(x, y) {
@@ -332,7 +367,18 @@ BackgroundLayer = cc.Layer.extend({
         polyNode = HexUtils.prototype.drawHex(x, y);
         return _this.addChild(polyNode, 5);
       };
-    })(this), null);
+    })(this));
+    hexesInRow = 5;
+    hexesInCol = 5;
+    MouseHelper.prototype.onRightMouse(this, (function(_this) {
+      return function(x, y) {
+        var hexesGrid, polyNode;
+        hexesGrid = HexUtils.prototype.generateHexesGrid(x, y, hexesInRow, hexesInCol);
+        polyNode = HexUtils.prototype.drawHexesGrid(hexesGrid);
+        _this.addChild(polyNode, 5);
+        return HexUtils.prototype.drawHexesGridNumbers(hexesGrid, _this, 6);
+      };
+    })(this));
     return this.scheduleUpdate();
   },
   update: function() {}
@@ -376,6 +422,30 @@ MouseHelper = (function() {
     }, target);
   };
 
+  MouseHelper.prototype.onRightMouse = function(target, callbackDown, callbackUp) {
+    return cc.eventManager.addListener({
+      event: cc.EventListener.MOUSE,
+      onMouseDown: function(event) {
+        if (event.getButton() === cc.EventMouse.BUTTON_RIGHT) {
+          if (callbackDown) {
+            callbackDown(event.getLocationX(), event.getLocationY());
+          }
+          return cc.log("Right mouse button pressed at " + (event.getLocationX()));
+        }
+      },
+      onMouseUp: function(event) {
+        if (event.getButton() === cc.EventMouse.BUTTON_RIGHT) {
+          if (callbackUp) {
+            callbackUp(event.getLocationX(), event.getLocationY());
+          }
+          if (event.getButton() === cc.EventMouse.BUTTON_LEFT) {
+            return cc.log("Right mouse button released at " + (event.getLocationX()));
+          }
+        }
+      }
+    }, target);
+  };
+
   return MouseHelper;
 
 })();
@@ -392,7 +462,7 @@ ObjectsUtils = (function() {
   };
 
   ObjectsUtils.prototype.getCustomPostfixId = function(postfix) {
-    return "" + (this.getRandomId()) + "_#postfix";
+    return "" + (this.getRandomId()) + "_" + postfix;
   };
 
   return ObjectsUtils;

@@ -4,4 +4,4 @@ class ObjectsUtils
     getRandomId: ->
         "#{@getS4()}#{@getS4()}-#{@getS4()}-#{@getS4()}-#{@getS4()}-#{@getS4()}#{@getS4()}#{@getS4()}"
     getCustomPostfixId: (postfix)->
-        "#{@getRandomId()}_#postfix"
+        "#{@getRandomId()}_#{postfix}"
