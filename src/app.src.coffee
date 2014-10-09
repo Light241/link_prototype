@@ -197,8 +197,8 @@ BackgroundLayer = cc.Layer.extend
         @scheduleUpdate();###
 
         #TODO (S.Panfilov) current work point
-        MouseHelper::onLeftMouse (BackgroundLayer, x, y) ->
-            HexUtils::drawHex x, y
+        #MouseHelper::onLeftMouse (BackgroundLayer, x, y) ->
+        #    HexUtils::drawHex x, y
 
 ###AnimationLayer = cc.Layer.extend
     spriteSheet: null

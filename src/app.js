@@ -317,7 +317,7 @@ BackgroundLayer = cc.Layer.extend({
     return this.init();
   },
   init: function() {
-    this._super();
+    return this._super();
 
     /*@demoLvlMap = cc.TMXTiledMap.create res.demo_lvl_bg_tmx
     @addChild @demoLvlMap
@@ -325,9 +325,6 @@ BackgroundLayer = cc.Layer.extend({
     
     @scheduleUpdate();
      */
-    return MouseHelper.prototype.onLeftMouse(function(BackgroundLayer, x, y) {
-      return HexUtils.prototype.drawHex(x, y);
-    });
   }
 });
 
