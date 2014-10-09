@@ -268,7 +268,8 @@ HexUtils = (function() {
     var drawNode, hex;
     hex = this.calculateHex(centerX, centerY);
     drawNode = new cc.DrawNode;
-    return drawNode.drawPoly(hex.corners, cc.color(255, 255, 255), 1, cc.color(255, 255, 255));
+    drawNode.drawPoly(hex.corners, cc.color(255, 255, 255), 1, cc.color(255, 255, 255));
+    return drawNode;
   };
 
   return HexUtils;
@@ -314,61 +315,27 @@ BackgroundLayer = cc.Layer.extend({
     return this.init();
   },
   init: function() {
+    var helloLabel, hexSizePx, self, size;
     this._super();
-
-    /*@demoLvlMap = cc.TMXTiledMap.create res.demo_lvl_bg_tmx
-    @addChild @demoLvlMap
-    @mapWidth = @demoLvlMap.getContentSize().width
-    
-    @scheduleUpdate();
-     */
-    HexUtils.prototype.setHexesConfig(20);
-    return MouseHelper.prototype.onLeftMouse(this, function(x, y) {
-      return HexUtils.prototype.drawHex(x, y);
+    size = cc.winSize;
+    this.maxWidth = cc.director.getWinSizeInPixels().width;
+    this.maxHeight = cc.director.getWinSizeInPixels().height;
+    helloLabel = new cc.LabelTTF("Hello Worlds", "Arial", 38);
+    helloLabel.x = size.width / 2;
+    helloLabel.y = 100;
+    this.addChild(helloLabel, 5);
+    hexSizePx = 20;
+    HexUtils.prototype.setHexesConfig(hexSizePx);
+    self = this;
+    MouseHelper.prototype.onLeftMouse(this, function(x, y) {
+      var polyNode;
+      polyNode = HexUtils.prototype.drawHex(x, y);
+      return self.addChild(polyNode, 5);
     }, null);
-
-    /*cc.eventManager.addListener
-            event: cc.EventListener.MOUSE
-            onMouseDown: (event) ->
-                str = "MousePosition X: " + event.getLocationX() + "  Y:" + event.getLocationY()
-                cc.log str
-    , @
-     */
-  }
+    return this.scheduleUpdate();
+  },
+  update: function() {}
 });
-
-
-/*AnimationLayer = cc.Layer.extend
-    spriteSheet: null
-    runningAction: null
-    sprite: null
-    ctor: ->
-        @_super()
-        @init()
-
-    init: ->
-        @_super()
-
-        cc.spriteFrameCache.addSpriteFrames res.running_plist #TODO (S.Panfilov) second arg
-        @spriteSheet = cc.SpriteBatchNode.create res.running_png
-        @addChild @spriteSheet
-
-        animFrames = []
-        for i in [0..7]
-            str = "runner" + i + ".png"
-            frame = cc.spriteFrameCache.getSpriteFrame str
-            animFrames.push frame
-
-        animation = cc.Animation.create animFrames, 0.1
-        @runningAction = cc.RepeatForever.create cc.Animate.create animation
-        @sprite = cc.Sprite.create "#runner0.png"
-        @sprite.attr
-            x:80
-            y:85
-        @sprite.runAction
-    @runningAction;
-        @spriteSheet.addChild @sprite;
- */
 
 StartupScene = cc.Scene.extend({
   onEnter: function() {

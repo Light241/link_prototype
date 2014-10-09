@@ -1,10 +1,6 @@
 'use strict' #do not remove (never!)
 
 BackgroundLayer = cc.Layer.extend
-    #demoLvlMap: null
-    #map01: null
-    #mapWidth: 0
-    #mapIndex: 0
     ctor: ->
         @_super()
         @init()
@@ -12,59 +8,29 @@ BackgroundLayer = cc.Layer.extend
     init: ->
         @_super()
 
-        ###@demoLvlMap = cc.TMXTiledMap.create res.demo_lvl_bg_tmx
-        @addChild @demoLvlMap
-        @mapWidth = @demoLvlMap.getContentSize().width
+        size = cc.winSize
+        @maxWidth = cc.director.getWinSizeInPixels().width
+        @maxHeight = cc.director.getWinSizeInPixels().height
 
-        @scheduleUpdate();###
+        helloLabel = new cc.LabelTTF("Hello Worlds", "Arial", 38)
+        helloLabel.x = size.width / 2
+        helloLabel.y = 100
+        @addChild helloLabel, 5
 
         #TODO (S.Panfilov) current work point
-        HexUtils::setHexesConfig 20
+        hexSizePx = 20
+        HexUtils::setHexesConfig hexSizePx
+        self = @
         MouseHelper::onLeftMouse @, (x, y) ->
-            HexUtils::drawHex x, y
+            polyNode = HexUtils::drawHex x, y
+            self.addChild polyNode, 5
         , null
 
-        ###cc.eventManager.addListener
-                event: cc.EventListener.MOUSE
-                onMouseDown: (event) ->
-                    str = "MousePosition X: " + event.getLocationX() + "  Y:" + event.getLocationY()
-                    cc.log str
-        , @###
-
-###AnimationLayer = cc.Layer.extend
-    spriteSheet: null
-    runningAction: null
-    sprite: null
-    ctor: ->
-        @_super()
-        @init()
-
-    init: ->
-        @_super()
-
-        cc.spriteFrameCache.addSpriteFrames res.running_plist #TODO (S.Panfilov) second arg
-        @spriteSheet = cc.SpriteBatchNode.create res.running_png
-        @addChild @spriteSheet
-
-        animFrames = []
-        for i in [0..7]
-            str = "runner" + i + ".png"
-            frame = cc.spriteFrameCache.getSpriteFrame str
-            animFrames.push frame
-
-        animation = cc.Animation.create animFrames, 0.1
-        @runningAction = cc.RepeatForever.create cc.Animate.create animation
-        @sprite = cc.Sprite.create "#runner0.png"
-        @sprite.attr
-            x:80
-            y:85
-        @sprite.runAction
-    @runningAction;
-        @spriteSheet.addChild @sprite;
-    ###
+        @scheduleUpdate()
+    update: ->
+        #update called every frame after @scheduleUpdate called
 
 StartupScene = cc.Scene.extend onEnter: ->
     @_super()
     @addChild new BackgroundLayer()
-    #@addChild new AnimationLayer() #TODO (S.Panfilov) turn on
     return

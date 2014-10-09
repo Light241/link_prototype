@@ -81,3 +81,4 @@ class HexUtils
             #cc.drawNode.drawPoly hex.corners[i].x, hex.corners[i].y
         drawNode = new cc.DrawNode
         drawNode.drawPoly hex.corners, cc.color(255, 255, 255), 1, cc.color(255, 255, 255)
+        return drawNode
