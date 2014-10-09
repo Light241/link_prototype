@@ -268,7 +268,7 @@ HexUtils = (function() {
     var drawNode, hex;
     hex = this.calculateHex(centerX, centerY);
     drawNode = new cc.DrawNode;
-    drawNode.drawPoly(hex.corners, cc.color(255, 255, 255), 1, cc.color(255, 255, 255));
+    drawNode.drawPoly(hex.corners, cc.color(255, 255, 255), 1, cc.color(0, 0, 255));
     return drawNode;
   };
 
@@ -315,7 +315,7 @@ BackgroundLayer = cc.Layer.extend({
     return this.init();
   },
   init: function() {
-    var helloLabel, hexSizePx, self, size;
+    var helloLabel, hexSizePx, size;
     this._super();
     size = cc.winSize;
     this.maxWidth = cc.director.getWinSizeInPixels().width;
@@ -326,12 +326,13 @@ BackgroundLayer = cc.Layer.extend({
     this.addChild(helloLabel, 5);
     hexSizePx = 20;
     HexUtils.prototype.setHexesConfig(hexSizePx);
-    self = this;
-    MouseHelper.prototype.onLeftMouse(this, function(x, y) {
-      var polyNode;
-      polyNode = HexUtils.prototype.drawHex(x, y);
-      return self.addChild(polyNode, 5);
-    }, null);
+    MouseHelper.prototype.onLeftMouse(this, (function(_this) {
+      return function(x, y) {
+        var polyNode;
+        polyNode = HexUtils.prototype.drawHex(x, y);
+        return _this.addChild(polyNode, 5);
+      };
+    })(this), null);
     return this.scheduleUpdate();
   },
   update: function() {}

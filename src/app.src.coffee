@@ -158,11 +158,9 @@ class HexUtils
         result
     drawHex: (centerX, centerY) ->
         hex = @calculateHex centerX, centerY
-        #for i in [0...@hexesConfig.cornersCount]
-            #cc.drawNode.drawPoly hex.corners[i].x, hex.corners[i].y
         drawNode = new cc.DrawNode
-        drawNode.drawPoly hex.corners, cc.color(255, 255, 255), 1, cc.color(255, 255, 255)
-        return drawNode
+        drawNode.drawPoly hex.corners, cc.color(255, 255, 255), 1, cc.color(0, 0, 255)
+        drawNode
 #TODO (S.Panfilov) may be instead of @ at addListener func, we should set target (some kind of input elem or smt)
 class KeyboardHelper
     isKeyboardExist: ->
@@ -201,10 +199,9 @@ BackgroundLayer = cc.Layer.extend
         #TODO (S.Panfilov) current work point
         hexSizePx = 20
         HexUtils::setHexesConfig hexSizePx
-        self = @
-        MouseHelper::onLeftMouse @, (x, y) ->
+        MouseHelper::onLeftMouse @, (x, y) =>
             polyNode = HexUtils::drawHex x, y
-            self.addChild polyNode, 5
+            @addChild polyNode, 5
         , null
 
         @scheduleUpdate()

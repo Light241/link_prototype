@@ -20,10 +20,9 @@ BackgroundLayer = cc.Layer.extend
         #TODO (S.Panfilov) current work point
         hexSizePx = 20
         HexUtils::setHexesConfig hexSizePx
-        self = @
-        MouseHelper::onLeftMouse @, (x, y) ->
+        MouseHelper::onLeftMouse @, (x, y) =>
             polyNode = HexUtils::drawHex x, y
-            self.addChild polyNode, 5
+            @addChild polyNode, 5
         , null
 
         @scheduleUpdate()
