@@ -19,8 +19,16 @@ BackgroundLayer = cc.Layer.extend
         @scheduleUpdate();###
 
         #TODO (S.Panfilov) current work point
-        #MouseHelper::onLeftMouse (BackgroundLayer, x, y) ->
-        #    HexUtils::drawHex x, y
+        MouseHelper::onLeftMouse @, (x, y) ->
+            HexUtils::drawHex x, y
+        , null
+
+        ###cc.eventManager.addListener
+                event: cc.EventListener.MOUSE
+                onMouseDown: (event) ->
+                    str = "MousePosition X: " + event.getLocationX() + "  Y:" + event.getLocationY()
+                    cc.log str
+        , @###
 
 ###AnimationLayer = cc.Layer.extend
     spriteSheet: null

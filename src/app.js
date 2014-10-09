@@ -317,13 +317,24 @@ BackgroundLayer = cc.Layer.extend({
     return this.init();
   },
   init: function() {
-    return this._super();
+    this._super();
 
     /*@demoLvlMap = cc.TMXTiledMap.create res.demo_lvl_bg_tmx
     @addChild @demoLvlMap
     @mapWidth = @demoLvlMap.getContentSize().width
     
     @scheduleUpdate();
+     */
+    return MouseHelper.prototype.onLeftMouse(this, function(x, y) {
+      return HexUtils.prototype.drawHex(x, y);
+    }, null);
+
+    /*cc.eventManager.addListener
+            event: cc.EventListener.MOUSE
+            onMouseDown: (event) ->
+                str = "MousePosition X: " + event.getLocationX() + "  Y:" + event.getLocationY()
+                cc.log str
+    , @
      */
   }
 });
@@ -389,12 +400,12 @@ MouseHelper = (function() {
    */
 
   MouseHelper.prototype.onLeftMouse = function(target, callbackDown, callbackUp) {
-    cc.eventManager.addListener({
+    return cc.eventManager.addListener({
       event: cc.EventListener.MOUSE,
       onMouseDown: function(event) {
         if (event.getButton() === cc.EventMouse.BUTTON_LEFT) {
           if (callbackDown) {
-            callbackDown(event.getLocationX()(event.getLocationY()));
+            callbackDown(event.getLocationX(), event.getLocationY());
           }
           return cc.log("Left mouse button pressed at " + (event.getLocationX()));
         }
@@ -402,7 +413,7 @@ MouseHelper = (function() {
       onMouseUp: function(event) {
         if (event.getButton() === cc.EventMouse.BUTTON_LEFT) {
           if (callbackUp) {
-            callbackUp(event.getLocationX()(event.getLocationY()));
+            callbackUp(event.getLocationX(), event.getLocationY());
           }
           if (event.getButton() === cc.EventMouse.BUTTON_LEFT) {
             return cc.log("Left mouse button released at " + (event.getLocationX()));
@@ -410,9 +421,6 @@ MouseHelper = (function() {
         }
       }
     }, target);
-    if (callback) {
-      return callback();
-    }
   };
 
   MouseHelper.prototype.onLeftMouseUp = function() {};
