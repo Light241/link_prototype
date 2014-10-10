@@ -4,6 +4,9 @@ class HexUtils
         drawNode.drawPoly hex.corners, cc.color(255, 255, 255), 1, cc.color(0, 0, 255)
         drawNode
 
+    _isEven = (number) ->
+        (number % 2 is 0)
+
     hexes: {}
     hexesConfig:
         type: 'Pointy topped'
@@ -52,20 +55,29 @@ class HexUtils
     getOffsetForHex: (centerX, centerY, widthHexCount, heightHexCount, hexNumber) ->
         horizontalDistance = @hexesConfig.horizontalDistance
         verticalDistance = @hexesConfig.verticalDistance
+        rowNumber = Math.floor(hexNumber / widthHexCount)
+        isFirstHexInRow = Math.floor(hexNumber / widthHexCount) is hexNumber / widthHexCount
         result = {}
+
         if hexNumber is 0
             result.x = centerX
             result.y = centerY
         else if hexNumber < widthHexCount
             result.x = centerX + (horizontalDistance * hexNumber)
             result.y = centerY
-        else if hexNumber is widthHexCount
-            result.x = centerX + (horizontalDistance / 2)
-            result.y = centerY - verticalDistance
-        else if hexNumber > widthHexCount
-            r = hexNumber % widthHexCount
-            result.x = centerX + ((horizontalDistance / 2) * hexNumber)
-            result.y = centerY - (verticalDistance * r)
+        else if hexNumber >= widthHexCount
+            if _isEven rowNumber
+                if isFirstHexInRow
+                    result.x = centerX
+                else
+                    result.x = centerX + ((horizontalDistance) * (hexNumber - (widthHexCount * rowNumber)))
+            else
+                if isFirstHexInRow
+                    result.x = centerX - (horizontalDistance / 2)
+                else
+                    result.x = centerX - (horizontalDistance / 2) + ((horizontalDistance) * (hexNumber - (widthHexCount * rowNumber)))
+            result.y = centerY - (verticalDistance * rowNumber)
+
         result
     getAxialCoords: (widthHexCount, heightHexCount, hexNumber) ->
         result = {}
@@ -79,7 +91,7 @@ class HexUtils
             result.q = 0
             result.r = 1
         else if hexNumber > widthHexCount
-            r = hexNumber % widthHexCount
+            r = Math.floor(hexNumber / widthHexCount)
             result.q = hexNumber - (r * widthHexCount)
             result.r = r
         result

@@ -155,13 +155,17 @@ EventsUtils = (function() {
 })();
 
 HexUtils = (function() {
-  var _drawHex;
+  var _drawHex, _isEven;
 
   function HexUtils() {}
 
   _drawHex = function(drawNode, hex) {
     drawNode.drawPoly(hex.corners, cc.color(255, 255, 255), 1, cc.color(0, 0, 255));
     return drawNode;
+  };
+
+  _isEven = function(number) {
+    return number % 2 === 0;
   };
 
   HexUtils.prototype.hexes = {};
@@ -232,9 +236,11 @@ HexUtils = (function() {
   };
 
   HexUtils.prototype.getOffsetForHex = function(centerX, centerY, widthHexCount, heightHexCount, hexNumber) {
-    var horizontalDistance, r, result, verticalDistance;
+    var horizontalDistance, isFirstHexInRow, result, rowNumber, verticalDistance;
     horizontalDistance = this.hexesConfig.horizontalDistance;
     verticalDistance = this.hexesConfig.verticalDistance;
+    rowNumber = Math.floor(hexNumber / widthHexCount);
+    isFirstHexInRow = Math.floor(hexNumber / widthHexCount) === hexNumber / widthHexCount;
     result = {};
     if (hexNumber === 0) {
       result.x = centerX;
@@ -242,13 +248,21 @@ HexUtils = (function() {
     } else if (hexNumber < widthHexCount) {
       result.x = centerX + (horizontalDistance * hexNumber);
       result.y = centerY;
-    } else if (hexNumber === widthHexCount) {
-      result.x = centerX + (horizontalDistance / 2);
-      result.y = centerY - verticalDistance;
-    } else if (hexNumber > widthHexCount) {
-      r = hexNumber % widthHexCount;
-      result.x = centerX + ((horizontalDistance / 2) * hexNumber);
-      result.y = centerY - (verticalDistance * r);
+    } else if (hexNumber >= widthHexCount) {
+      if (_isEven(rowNumber)) {
+        if (isFirstHexInRow) {
+          result.x = centerX;
+        } else {
+          result.x = centerX + (horizontalDistance * (hexNumber - (widthHexCount * rowNumber)));
+        }
+      } else {
+        if (isFirstHexInRow) {
+          result.x = centerX - (horizontalDistance / 2);
+        } else {
+          result.x = centerX - (horizontalDistance / 2) + (horizontalDistance * (hexNumber - (widthHexCount * rowNumber)));
+        }
+      }
+      result.y = centerY - (verticalDistance * rowNumber);
     }
     return result;
   };
@@ -266,7 +280,7 @@ HexUtils = (function() {
       result.q = 0;
       result.r = 1;
     } else if (hexNumber > widthHexCount) {
-      r = hexNumber % widthHexCount;
+      r = Math.floor(hexNumber / widthHexCount);
       result.q = hexNumber - (r * widthHexCount);
       result.r = r;
     }
@@ -370,8 +384,8 @@ BackgroundLayer = cc.Layer.extend({
         return _this.addChild(polyNode, 5);
       };
     })(this));
-    hexesInRow = 5;
-    hexesInCol = 2;
+    hexesInRow = 3;
+    hexesInCol = 3;
     MouseHelper.prototype.onRightMouse(this, (function(_this) {
       return function(x, y) {
         var hexesGrid, polyNode;
