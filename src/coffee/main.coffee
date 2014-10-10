@@ -34,6 +34,7 @@ BackgroundLayer = cc.Layer.extend
         @scheduleUpdate()
     update: ->
         #update called every frame after @scheduleUpdate called
+        #
 
 StartupScene = cc.Scene.extend onEnter: ->
     @_super()
