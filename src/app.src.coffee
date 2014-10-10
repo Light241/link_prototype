@@ -96,6 +96,7 @@ class HexUtils
         @hexesConfig.hexHeight = size * 2
         @hexesConfig.hexWidth = Math.sqrt(3) / 2 * @hexesConfig.hexHeight
         @hexesConfig.horizontalDistance = @hexesConfig.hexWidth
+        @hexesConfig.verticalDistance = (3 / 4) * @hexesConfig.hexHeight
     convertCubeToAxial: (x, z) ->
         q: x
         r: z
@@ -130,21 +131,22 @@ class HexUtils
             @hexes[hex.alias] = hex
         @hexes
     getOffsetForHex: (centerX, centerY, widthHexCount, heightHexCount, hexNumber) ->
-        distance = @hexesConfig.horizontalDistance
+        horizontalDistance = @hexesConfig.horizontalDistance
+        verticalDistance = @hexesConfig.verticalDistance
         result = {}
         if hexNumber is 0
             result.x = centerX
             result.y = centerY
         else if hexNumber < widthHexCount
-            result.x = centerX + (distance * hexNumber)
+            result.x = centerX + (horizontalDistance * hexNumber)
             result.y = centerY
         else if hexNumber is widthHexCount
-            result.x = centerX + (distance / 2)
-            result.y = centerY - distance
+            result.x = centerX + (horizontalDistance / 2)
+            result.y = centerY - verticalDistance
         else if hexNumber > widthHexCount
             r = hexNumber % widthHexCount
-            result.x = centerX + ((distance / 2) * hexNumber)
-            result.y = centerY - (distance * r)
+            result.x = centerX + ((horizontalDistance / 2) * hexNumber)
+            result.y = centerY - (verticalDistance * r)
         result
     getAxialCoords: (widthHexCount, heightHexCount, hexNumber) ->
         result = {}
@@ -223,7 +225,7 @@ BackgroundLayer = cc.Layer.extend
             polyNode = HexUtils::drawHex x, y
             @addChild polyNode, 5
 
-        hexesInRow = 2
+        hexesInRow = 5
         hexesInCol = 2
         MouseHelper::onRightMouse @, (x, y) =>
             hexesGrid = HexUtils::generateHexesGrid x, y, hexesInRow, hexesInCol

@@ -177,7 +177,8 @@ HexUtils = (function() {
     this.hexesConfig.hexSize = size;
     this.hexesConfig.hexHeight = size * 2;
     this.hexesConfig.hexWidth = Math.sqrt(3) / 2 * this.hexesConfig.hexHeight;
-    return this.hexesConfig.horizontalDistance = this.hexesConfig.hexWidth;
+    this.hexesConfig.horizontalDistance = this.hexesConfig.hexWidth;
+    return this.hexesConfig.verticalDistance = (3 / 4) * this.hexesConfig.hexHeight;
   };
 
   HexUtils.prototype.convertCubeToAxial = function(x, z) {
@@ -231,22 +232,23 @@ HexUtils = (function() {
   };
 
   HexUtils.prototype.getOffsetForHex = function(centerX, centerY, widthHexCount, heightHexCount, hexNumber) {
-    var distance, r, result;
-    distance = this.hexesConfig.horizontalDistance;
+    var horizontalDistance, r, result, verticalDistance;
+    horizontalDistance = this.hexesConfig.horizontalDistance;
+    verticalDistance = this.hexesConfig.verticalDistance;
     result = {};
     if (hexNumber === 0) {
       result.x = centerX;
       result.y = centerY;
     } else if (hexNumber < widthHexCount) {
-      result.x = centerX + (distance * hexNumber);
+      result.x = centerX + (horizontalDistance * hexNumber);
       result.y = centerY;
     } else if (hexNumber === widthHexCount) {
-      result.x = centerX + (distance / 2);
-      result.y = centerY - distance;
+      result.x = centerX + (horizontalDistance / 2);
+      result.y = centerY - verticalDistance;
     } else if (hexNumber > widthHexCount) {
       r = hexNumber % widthHexCount;
-      result.x = centerX + ((distance / 2) * hexNumber);
-      result.y = centerY - (distance * r);
+      result.x = centerX + ((horizontalDistance / 2) * hexNumber);
+      result.y = centerY - (verticalDistance * r);
     }
     return result;
   };
@@ -368,7 +370,7 @@ BackgroundLayer = cc.Layer.extend({
         return _this.addChild(polyNode, 5);
       };
     })(this));
-    hexesInRow = 2;
+    hexesInRow = 5;
     hexesInCol = 2;
     MouseHelper.prototype.onRightMouse(this, (function(_this) {
       return function(x, y) {
