@@ -384,15 +384,15 @@ BackgroundLayer = cc.Layer.extend({
         return _this.addChild(polyNode, 5);
       };
     })(this));
-    hexesInRow = 3;
-    hexesInCol = 3;
+    hexesInRow = 10;
+    hexesInCol = 10;
     MouseHelper.prototype.onRightMouse(this, (function(_this) {
       return function(x, y) {
         var hexesGrid, polyNode;
         hexesGrid = HexUtils.prototype.generateHexesGrid(x, y, hexesInRow, hexesInCol);
         polyNode = HexUtils.prototype.drawHexesGrid(hexesGrid);
         _this.addChild(polyNode, 5);
-        return HexUtils.prototype.drawHexesGridNumbers(hexesGrid, _this, 6);
+        return HexUtils.prototype.drawHexesGridNumbers(hexesGrid, _this, 5);
       };
     })(this));
     return this.scheduleUpdate();

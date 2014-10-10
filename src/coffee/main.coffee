@@ -23,13 +23,13 @@ BackgroundLayer = cc.Layer.extend
             polyNode = HexUtils::drawHex x, y
             @addChild polyNode, 5
 
-        hexesInRow = 3
-        hexesInCol = 3
+        hexesInRow = 10
+        hexesInCol = 10
         MouseHelper::onRightMouse @, (x, y) =>
             hexesGrid = HexUtils::generateHexesGrid x, y, hexesInRow, hexesInCol
             polyNode =  HexUtils::drawHexesGrid hexesGrid
             @addChild polyNode, 5
-            HexUtils::drawHexesGridNumbers hexesGrid, @, 6
+            HexUtils::drawHexesGridNumbers hexesGrid, @, 5
 
         @scheduleUpdate()
     update: ->
