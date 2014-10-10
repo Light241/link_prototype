@@ -116,16 +116,12 @@ class HexUtils
                 y: centerY + @hexesConfig.hexSize * Math.sin angle
         hex
     generateHexesGrid: (centerX, centerY, widthHexCount, heightHexCount) ->
+        @hexes = []
         hexesCount = widthHexCount * heightHexCount
         for i in [0...hexesCount]
             hex = {}
-            if i is 0
-                hex = @calculateHex centerX, centerY
-            else
-                hex = @calculateHex newHexCenterX, newHexCenterY
             offset = @getOffsetForHex centerX, centerY, widthHexCount, heightHexCount, i
-            newHexCenterX = offset.x
-            newHexCenterY = offset.y
+            hex = @calculateHex offset.x, offset.y
             axial = @getAxialCoords widthHexCount, heightHexCount, i
             hex.q = axial.q
             hex.r = axial.r
@@ -134,28 +130,33 @@ class HexUtils
             @hexes[hex.alias] = hex
         @hexes
     getOffsetForHex: (centerX, centerY, widthHexCount, heightHexCount, hexNumber) ->
-        distance = @hexesConfig.hexSize
+        distance = @hexesConfig.horizontalDistance
         result = {}
         if hexNumber is 0
             result.x = centerX
             result.y = centerY
-        else if hexNumber <= widthHexCount
+        else if hexNumber < widthHexCount
             result.x = centerX + (distance * hexNumber)
             result.y = centerY
+        else if hexNumber is widthHexCount
+            result.x = centerX + (distance / 2)
+            result.y = centerY - distance
         else if hexNumber > widthHexCount
             r = hexNumber % widthHexCount
-            offsetInHexes = hexNumber - (widthHexCount * r)
-            result.x = centerX + (distance * (offsetInHexes-1))
-            result.y = centerY + (distance * r)
+            result.x = centerX + ((distance / 2) * hexNumber)
+            result.y = centerY - (distance * r)
         result
     getAxialCoords: (widthHexCount, heightHexCount, hexNumber) ->
         result = {}
         if hexNumber is 0
             result.q = 0
             result.r = 0
-        else if hexNumber <= widthHexCount
+        else if hexNumber < widthHexCount
             result.q = hexNumber
             result.r = 0
+        else if hexNumber is widthHexCount
+            result.q = 0
+            result.r = 1
         else if hexNumber > widthHexCount
             r = hexNumber % widthHexCount
             result.q = hexNumber - (r * widthHexCount)
@@ -175,7 +176,7 @@ class HexUtils
         hexes = hexes || @hexes
         for k of hexes
             if hexes.hasOwnProperty k
-                hexLabel = new cc.LabelTTF("#{hexes[k].q} #{hexes[k].r}", "Arial", 10)
+                hexLabel = new cc.LabelTTF("#{hexes[k].q}, #{hexes[k].r}", "Arial", 10)
                 hexLabel.setColor(cc.color(0, 0, 255));
                 hexLabel.x = hexes[k].centerX
                 hexLabel.y = hexes[k].centerY
@@ -222,8 +223,8 @@ BackgroundLayer = cc.Layer.extend
             polyNode = HexUtils::drawHex x, y
             @addChild polyNode, 5
 
-        hexesInRow = 5
-        hexesInCol = 5
+        hexesInRow = 2
+        hexesInCol = 2
         MouseHelper::onRightMouse @, (x, y) =>
             hexesGrid = HexUtils::generateHexesGrid x, y, hexesInRow, hexesInCol
             polyNode =  HexUtils::drawHexesGrid hexesGrid

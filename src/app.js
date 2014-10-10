@@ -213,18 +213,13 @@ HexUtils = (function() {
   };
 
   HexUtils.prototype.generateHexesGrid = function(centerX, centerY, widthHexCount, heightHexCount) {
-    var axial, hex, hexesCount, i, newHexCenterX, newHexCenterY, offset, _i;
+    var axial, hex, hexesCount, i, offset, _i;
+    this.hexes = [];
     hexesCount = widthHexCount * heightHexCount;
     for (i = _i = 0; 0 <= hexesCount ? _i < hexesCount : _i > hexesCount; i = 0 <= hexesCount ? ++_i : --_i) {
       hex = {};
-      if (i === 0) {
-        hex = this.calculateHex(centerX, centerY);
-      } else {
-        hex = this.calculateHex(newHexCenterX, newHexCenterY);
-      }
       offset = this.getOffsetForHex(centerX, centerY, widthHexCount, heightHexCount, i);
-      newHexCenterX = offset.x;
-      newHexCenterY = offset.y;
+      hex = this.calculateHex(offset.x, offset.y);
       axial = this.getAxialCoords(widthHexCount, heightHexCount, i);
       hex.q = axial.q;
       hex.r = axial.r;
@@ -236,20 +231,22 @@ HexUtils = (function() {
   };
 
   HexUtils.prototype.getOffsetForHex = function(centerX, centerY, widthHexCount, heightHexCount, hexNumber) {
-    var distance, offsetInHexes, r, result;
-    distance = this.hexesConfig.hexSize;
+    var distance, r, result;
+    distance = this.hexesConfig.horizontalDistance;
     result = {};
     if (hexNumber === 0) {
       result.x = centerX;
       result.y = centerY;
-    } else if (hexNumber <= widthHexCount) {
+    } else if (hexNumber < widthHexCount) {
       result.x = centerX + (distance * hexNumber);
       result.y = centerY;
+    } else if (hexNumber === widthHexCount) {
+      result.x = centerX + (distance / 2);
+      result.y = centerY - distance;
     } else if (hexNumber > widthHexCount) {
       r = hexNumber % widthHexCount;
-      offsetInHexes = hexNumber - (widthHexCount * r);
-      result.x = centerX + (distance * (offsetInHexes - 1));
-      result.y = centerY + (distance * r);
+      result.x = centerX + ((distance / 2) * hexNumber);
+      result.y = centerY - (distance * r);
     }
     return result;
   };
@@ -260,9 +257,12 @@ HexUtils = (function() {
     if (hexNumber === 0) {
       result.q = 0;
       result.r = 0;
-    } else if (hexNumber <= widthHexCount) {
+    } else if (hexNumber < widthHexCount) {
       result.q = hexNumber;
       result.r = 0;
+    } else if (hexNumber === widthHexCount) {
+      result.q = 0;
+      result.r = 1;
     } else if (hexNumber > widthHexCount) {
       r = hexNumber % widthHexCount;
       result.q = hexNumber - (r * widthHexCount);
@@ -295,7 +295,7 @@ HexUtils = (function() {
     _results = [];
     for (k in hexes) {
       if (hexes.hasOwnProperty(k)) {
-        hexLabel = new cc.LabelTTF("" + hexes[k].q + " " + hexes[k].r, "Arial", 10);
+        hexLabel = new cc.LabelTTF("" + hexes[k].q + ", " + hexes[k].r, "Arial", 10);
         hexLabel.setColor(cc.color(0, 0, 255));
         hexLabel.x = hexes[k].centerX;
         hexLabel.y = hexes[k].centerY;
@@ -368,8 +368,8 @@ BackgroundLayer = cc.Layer.extend({
         return _this.addChild(polyNode, 5);
       };
     })(this));
-    hexesInRow = 5;
-    hexesInCol = 5;
+    hexesInRow = 2;
+    hexesInCol = 2;
     MouseHelper.prototype.onRightMouse(this, (function(_this) {
       return function(x, y) {
         var hexesGrid, polyNode;
