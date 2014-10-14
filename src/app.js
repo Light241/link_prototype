@@ -551,4 +551,4 @@ TouchHelper = (function() {
 
 })();
 
-//# sourceMappingURL=app.js.map
+//# sourceMappingURL=../src/app.js.map
